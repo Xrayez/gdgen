@@ -1,11 +1,12 @@
 #include "register_types.h"
+#include "TEMPLATE_HEADER"
 
-void register__types() {
+void register_TEMPLATE_REGISTER_TYPES_types() {
 
-    ClassDB::register_class<>();
+    ClassDB::register_class<TEMPLATE_CLASS>();
 }
 
-void unregister__types() {
+void unregister_TEMPLATE_REGISTER_TYPES_types() {
 
     // nothing to do here
 }

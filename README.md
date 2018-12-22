@@ -4,7 +4,7 @@ A simple template that can generate necessary files to get started with module
 development for Godot Engine by running `init.py MyModule`
 
 Supported versions:
-* Godot 3.0 and higher
+* Godot 3.1
 
 ## Usage
 

@@ -1,0 +1,1 @@
+licenses_path = 'licenses/'

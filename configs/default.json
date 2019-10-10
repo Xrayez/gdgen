@@ -1,0 +1,24 @@
+{
+    "name": "Godot Module",
+    "short_name": "gdmodule",
+    "author": "Godot Engine contributors",
+
+    "engine_version": "latest",
+    
+    "classes": [
+        {
+            "name": "",
+            "inherits": "Reference"
+        }
+    ],
+    "docs_path": "docs",
+    "icons_path": "editor/icons",
+    "thirdparty_path": "thirdparty",
+    
+    "version_control": "git",
+    "continuous_integration": ["travis", "appveyor"],
+    "changelog": "keepachangelog.com",
+    "license": "MIT",
+    
+    "to_be_included_inside_project": true
+}

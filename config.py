@@ -1,1 +1,1 @@
-licenses_path = 'licenses/'
+licenses_path = 'templates/licenses/'

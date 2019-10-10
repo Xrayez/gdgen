@@ -19,3 +19,16 @@ class TemplateWriter:
 		with open(self.dest, 'w') as dest_file:
 			dest_file.write(text)
 	
+
+class FileWriter:
+	dest = ''
+	
+	def __init__(self, dest, enc="utf-8"):
+		self.dest = dest
+		self.f = open(dest, "w", encoding=enc)
+		
+	def write_line(self, line=""):
+		self.f.write(line + "\n")
+		
+	def close(self):
+		self.f.close()

@@ -6,6 +6,7 @@ import argparse
 import datetime
 
 from builders import TemplateWriter
+from builders import FileWriter
 
 import config
 
@@ -33,10 +34,42 @@ def init(name, output_path, config_path):
 		print_info("Module already exists at specified path.")
 		pass
 
-	write_license(module, module_path)
+	if module['readme']['initialize']:
+		make_readme(module, module_path)
+		
+	if module['license']:
+		make_license(module, module_path)
 	
 	
-def write_license(module, module_path):
+def make_readme(module, module_path):
+	readme_dest = os.path.join(module_path, "README.md")
+	
+	fw = FileWriter(readme_dest)
+	
+	fw.write_line("#" + " " + module['name'])
+	fw.write_line()
+	
+	if module['readme']['include_installation_instructions']:
+		
+		fw.write_line("## Installation")
+		fw.write_line()
+		fw.write_line("Before installing, you must be able to")
+		fw.write_line("[compile Godot Engine](https://docs.godotengine.org/en/" \
+				+ module["engine_version"] + "/development/compiling/) from source.")
+				
+		fw.write_line()
+		
+		fw.write_line("```bash")
+		fw.write_line("# Copy the module under directory named " + module['short_name'] + " (must be exactly that)")
+		fw.write_line("cp " + module['short_name'] + " <godot_path>/modules/" + module['short_name'] + " && cd <godot_path>")
+		fw.write_line("# Compile the engine manually, for instance:")
+		fw.write_line("scons platform=linux target=release_debug bits=64")
+		fw.write_line("```")
+	
+	fw.close()
+	
+	
+def make_license(module, module_path):
 	license_src = os.path.join(config.licenses_path, module['license']) + ".txt"
 	license_dest = os.path.join(module_path, "LICENSE.txt")
 	

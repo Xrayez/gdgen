@@ -8,6 +8,8 @@ import datetime
 from builders import TemplateWriter
 from builders import FileWriter
 
+from vcs import get_providers as get_vcs_providers
+
 import config
 
 
@@ -34,11 +36,15 @@ def init(name, output_path, config_path):
 		print_info("Module already exists at specified path.")
 		pass
 
+	# Generate
 	if module['readme']['initialize']:
 		make_readme(module, module_path)
 		
 	if module['license']:
 		make_license(module, module_path)
+		
+	if module['version_control']:
+		initialize_repository(module_path, module['version_control'])
 	
 	
 def make_readme(module, module_path):
@@ -79,6 +85,14 @@ def make_license(module, module_path):
 	}
 	tw = TemplateWriter(license_src, license_dest)
 	tw.write_out(license_template)
+	
+	
+def initialize_repository(module_path, vcs_name):
+	
+	for vcs in get_vcs_providers():
+		if not vcs.can_handle(vcs_name):
+			continue
+		vcs.initialize(module_path)
 	
 		
 def open_utf8(filename, mode):

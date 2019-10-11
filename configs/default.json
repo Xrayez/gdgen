@@ -8,7 +8,8 @@
     "classes": [
         {
             "name": "",
-            "inherits": "Reference"
+            "inherits": "Reference",
+            "path": "."
         }
     ],
     "docs_path": "docs",

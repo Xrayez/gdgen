@@ -39,6 +39,12 @@ class FileWriter:
 		
 def get_default_class_name(module):
 	return ''.join(x for x in module['short_name'].title() if not x.isspace())
+	
+	
+def get_include_by_type(class_type):
+    return {
+        'Reference': "#include \"core/reference.h\"",
+    }[class_type]
 
 
 def make_config(module, module_path):
@@ -131,6 +137,15 @@ def make_register_types(module, module_path):
 	
 	source.write_line("#include \"register_types.h\"")
 	source.write_line()
+	
+	for c in module['classes']:
+		name = c['name']
+		if not name:
+			name = get_default_class_name(module)
+		source.write_line("#include " + '\"' + name.lower() + ".h" + '\"')
+		
+	source.write_line()
+	
 	source.write_line("void register_" + module['short_name'] + "_types() {")
 	source.write_line()
 	
@@ -187,4 +202,67 @@ def make_scsub(module, module_path):
 	scsub.write_line(env_module + ".add_source_files(env.modules_sources, '*.cpp')")
 	
 	scsub.close()
+	
+	
+def make_classes(module, module_path):
+	
+	already_got_default = False
+	
+	for c_data in module['classes']:
+		name = c_data['name']
+		if not name:
+			if already_got_default:
+				continue
+			name = get_default_class_name(module)
+			already_got_default = True
+			
+		inherits = c_data['inherits']
+		
+		# Header
+		header_dest = os.path.join(module_path, name.lower() + '.h')
+		write_class_header(header_dest, name, inherits)
+		
+		# Source
+		source_dest = os.path.join(module_path, name.lower() + '.cpp')
+		write_class_source(source_dest, name, inherits)
+		
+		
+def write_class_header(header_dest, name, inherits):
+	
+	header = FileWriter(header_dest)
+	
+	header.write_line("#ifndef " + name.upper() + "_H")
+	header.write_line("#define " + name.upper() + "_H")
+	header.write_line()
+	
+	header.write_line(get_include_by_type(inherits))
+	header.write_line()
+	
+	header.write_line("class " + name + " : " + "public " + inherits + " {")
+	header.write_line("GDCLASS(" + name + ", " + inherits + ");", 1)
+	header.write_line()
+	
+	header.write_line("protected:")
+	header.write_line("static void _bind_methods();", 1)
+	
+	header.write_line("};")
+	header.write_line()
+	
+	header.write_line("#endif " + "// " + name.upper() + "_H")
+	
+	header.close()
+	
+	
+def write_class_source(source_dest, name, inherits):
+	
+	source = FileWriter(source_dest)
+	
+	source.write_line("#include " + '\"' + name.lower() + ".h" + '\"')
+	source.write_line()
+	
+	source.write_line("void " + name + "::_bind_methods() {")
+	source.write_line()
+	source.write_line("}")
+	
+	source.close()
 	

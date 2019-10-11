@@ -58,6 +58,8 @@ def generate(module, module_path):
 	builders.make_register_types(module, module_path)
 	builders.make_scsub(module, module_path)
 	
+	builders.make_classes(module, module_path)
+	
 	# Optional
 	if module['readme']['initialize']:
 		builders.make_readme(module, module_path)

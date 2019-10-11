@@ -44,14 +44,19 @@ def revert(path):
 
 def generate(module, module_path):
 	
-	# Create folder
+	# Initialize directory structure
 	os.makedirs(module_path)
+	
+	if module['thirdparty_path']:
+		thirdparty_dir = os.path.join(module_path, module['thirdparty_path'])
+		os.makedirs(thirdparty_dir)
 
 	### Generate!
 	
 	# Essential
 	builders.make_config(module, module_path)
 	builders.make_register_types(module, module_path)
+	builders.make_scsub(module, module_path)
 	
 	# Optional
 	if module['readme']['initialize']:

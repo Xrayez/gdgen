@@ -149,3 +149,42 @@ def make_register_types(module, module_path):
 	source.write_line("}")
 	
 	source.close()
+
+
+def make_scsub(module, module_path):
+	scsub_dest = os.path.join(module_path, "SCsub")
+	
+	scsub = FileWriter(scsub_dest)
+	
+	scsub.write_line("#!/usr/bin/env python")
+	scsub.write_line()
+	scsub.write_line("Import('env')")
+	scsub.write_line("Import('env_modules')")
+	scsub.write_line()
+
+	env_module = "env_" + module['short_name']
+	
+	scsub.write_line(env_module + " = env.Clone()")
+	scsub.write_line()
+	
+	if module['thirdparty_path']:
+		scsub.write_line("# Thirdparty source files")
+		scsub.write_line("thirdparty_dir = '" + module['thirdparty_path'] + "/'")
+		scsub.write_line("thirdparty_sources = []")
+		scsub.write_line("thirdparty_sources += Glob(thirdparty_dir + '**/*.cpp')")
+		scsub.write_line("thirdparty_sources += Glob(thirdparty_dir + '**/*.c')")
+		scsub.write_line()
+
+		scsub.write_line(env_module + ".Prepend(CPPPATH=[thirdparty_dir])")
+		scsub.write_line()
+		
+		scsub.write_line("env_thirdparty = " + env_module + ".Clone()")
+		scsub.write_line("env_thirdparty.add_source_files(env.modules_sources, thirdparty_sources)")
+		scsub.write_line("env_thirdparty.disable_warnings()")
+		scsub.write_line()
+
+	scsub.write_line("# Module source files")
+	scsub.write_line(env_module + ".add_source_files(env.modules_sources, '*.cpp')")
+	
+	scsub.close()
+	

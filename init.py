@@ -3,14 +3,10 @@
 import os
 import json
 import argparse
-import datetime
-
-from builders import TemplateWriter
-from builders import FileWriter
-
-from vcs import get_providers as get_vcs_providers
 
 import config
+import builders
+from vcs import get_providers as get_vcs_providers
 
 
 def init(name, output_path, config_path):
@@ -37,91 +33,18 @@ def init(name, output_path, config_path):
 		pass
 
 	# Generate
-	make_config(module, module_path)
+	builders.make_config(module, module_path)
 	
 	if module['readme']['initialize']:
-		make_readme(module, module_path)
+		builders.make_readme(module, module_path)
 		
 	if module['license']:
-		make_license(module, module_path)
+		builders.make_license(module, module_path)
 		
 	if module['version_control']:
 		initialize_repository(module_path, module['version_control'])
-	
-	
-def make_config(module, module_path):
-	config_dest = os.path.join(module_path, "config.py")
-	
-	fw = FileWriter(config_dest)
-	
-	fw.write_line()
-	
-	v = module['engine_version']
-	if v == 'latest':
-		fw.write_line("def can_build(env, platform):")
-	elif v == '3.0':
-		fw.write_line("def can_build(env):")
-	
-	fw.write_line("return True", 1)
-	fw.write_line()
-
-	fw.write_line("def configure(env):")
-	fw.write_line("pass", 1)
-	fw.write_line()
-	
-	if module["docs_path"]:
-		fw.write_line("def get_doc_path():")
-		fw.write_line("return \"" + module["docs_path"] + "\"", 1)
-		fw.write_line()
 		
-	if module["icons_path"]:
-		fw.write_line("def get_icons_path():")
-		fw.write_line("return \"" + module["icons_path"] + "\"", 1)
-		fw.write_line()
 		
-	fw.close()
-
-	
-def make_readme(module, module_path):
-	readme_dest = os.path.join(module_path, "README.md")
-	
-	fw = FileWriter(readme_dest)
-	
-	fw.write_line("#" + " " + module['name'])
-	fw.write_line()
-	
-	if module['readme']['include_installation_instructions']:
-		
-		fw.write_line("## Installation")
-		fw.write_line()
-		fw.write_line("Before installing, you must be able to")
-		fw.write_line("[compile Godot Engine](https://docs.godotengine.org/en/" \
-				+ module["engine_version"] + "/development/compiling/) from source.")
-				
-		fw.write_line()
-		
-		fw.write_line("```bash")
-		fw.write_line("# Copy the module under directory named " + module['short_name'] + " (must be exactly that)")
-		fw.write_line("cp " + module['short_name'] + " <godot_path>/modules/" + module['short_name'] + " && cd <godot_path>")
-		fw.write_line("# Compile the engine manually, for instance:")
-		fw.write_line("scons platform=linux target=release_debug bits=64")
-		fw.write_line("```")
-	
-	fw.close()
-	
-	
-def make_license(module, module_path):
-	license_src = os.path.join(config.licenses_path, module['license']) + ".txt"
-	license_dest = os.path.join(module_path, "LICENSE.txt")
-	
-	license_template = {
-		"__YEAR__" : str(datetime.datetime.now().year),
-		"__AUTHOR__" : module['author'],
-	}
-	tw = TemplateWriter(license_src, license_dest)
-	tw.write_out(license_template)
-	
-	
 def initialize_repository(module_path, vcs_name):
 	
 	for vcs in get_vcs_providers():

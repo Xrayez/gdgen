@@ -1,4 +1,9 @@
+# Python
 __pycache__
+*.pyc
 
 # IDE
 .vscode
+
+# Dev
+gdmodule/

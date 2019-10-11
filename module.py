@@ -5,38 +5,38 @@ from vcs import get_providers as get_vcs_providers
 
 
 class Module:
-    def __init__(self, config, module_path):
+    def __init__(self, config, path):
         self.config = config
-        self.module_path = module_path
+        self.path = path
         
     # Generate methods
     def generate(self):
 	
         # Initialize directory structure
-        os.makedirs(self.module_path)
+        os.makedirs(self.path)
         
         if self.get_thirdparty_path():
-            thirdparty_dir = os.path.join(self.module_path, self.get_thirdparty_path())
+            thirdparty_dir = os.path.join(self.path, self.get_thirdparty_path())
             os.makedirs(thirdparty_dir)
 
         ### Generate!
         
         # Essential
-        builders.make_config(self, self.module_path)
-        builders.make_register_types(self, self.module_path)
-        builders.make_scsub(self, self.module_path)
+        builders.make_config(self, self.path)
+        builders.make_register_types(self, self.path)
+        builders.make_scsub(self, self.path)
         
-        builders.make_classes(self, self.module_path)
+        builders.make_classes(self, self.path)
         
         # Optional
         if self.should_initialize_readme():
-            builders.make_readme(self, self.module_path)
+            builders.make_readme(self, self.path)
             
         if self.get_license():
-            builders.make_license(self, self.module_path)
+            builders.make_license(self, self.path)
         
         if self.get_vcs():
-            initialize_repository(self.module_path, self.get_vcs())
+            initialize_repository(self.path, self.get_vcs())
         
     # Config methods
         
@@ -86,9 +86,9 @@ class Module:
         return self.config['should_include_inside_project']
 
 
-def initialize_repository(module_path, vcs_name):
+def initialize_repository(path, vcs_name):
 	
 	for vcs in get_vcs_providers():
 		if not vcs.can_handle(vcs_name):
 			continue
-		vcs.initialize(module_path)
+		vcs.initialize(path)

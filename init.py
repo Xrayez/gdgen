@@ -34,7 +34,8 @@ def init(name, output_path, config_path, force=False):
 		
 	except Exception as e:
 		print_info(str(e))
-		print_info(INFO_PASS_FORCE_CMD)
+		if not force:
+			print_info(INFO_PASS_FORCE_CMD)
 		
 		
 def deinit(path):

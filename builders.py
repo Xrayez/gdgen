@@ -47,8 +47,8 @@ def get_include_by_type(class_type):
     }[class_type]
 
 
-def make_config(module, module_path):
-	config_dest = os.path.join(module_path, "config.py")
+def make_config(module):
+	config_dest = os.path.join(module.path, "config.py")
 	
 	fw = FileWriter(config_dest)
 	
@@ -80,8 +80,8 @@ def make_config(module, module_path):
 	fw.close()
 
 	
-def make_readme(module, module_path):
-	readme_dest = os.path.join(module_path, "README.md")
+def make_readme(module):
+	readme_dest = os.path.join(module.path, "README.md")
 	
 	fw = FileWriter(readme_dest)
 	
@@ -108,9 +108,9 @@ def make_readme(module, module_path):
 	fw.close()
 	
 	
-def make_license(module, module_path):
+def make_license(module):
 	license_src = os.path.join(common.licenses_path, module.get_license()) + ".txt"
-	license_dest = os.path.join(module_path, "LICENSE.txt")
+	license_dest = os.path.join(module.path, "LICENSE.txt")
 	
 	import datetime
 	license_template = {
@@ -121,10 +121,10 @@ def make_license(module, module_path):
 	tw.write_out(license_template)
 	
 	
-def make_register_types(module, module_path):
+def make_register_types(module):
 	
 	# Header
-	reg_types_header_dest = os.path.join(module_path, "register_types.h")
+	reg_types_header_dest = os.path.join(module.path, "register_types.h")
 	header = FileWriter(reg_types_header_dest)
 	
 	header.write_line("void register_" + module.get_short_name() + "_types();")
@@ -132,7 +132,7 @@ def make_register_types(module, module_path):
 	header.close()
 	
 	# Source
-	reg_types_source_dest = os.path.join(module_path, "register_types.cpp")
+	reg_types_source_dest = os.path.join(module.path, "register_types.cpp")
 	source = FileWriter(reg_types_source_dest)
 	
 	source.write_line("#include \"register_types.h\"")
@@ -166,8 +166,8 @@ def make_register_types(module, module_path):
 	source.close()
 
 
-def make_scsub(module, module_path):
-	scsub_dest = os.path.join(module_path, "SCsub")
+def make_scsub(module):
+	scsub_dest = os.path.join(module.path, "SCsub")
 	
 	scsub = FileWriter(scsub_dest)
 	
@@ -204,7 +204,7 @@ def make_scsub(module, module_path):
 	scsub.close()
 	
 	
-def make_classes(module, module_path):
+def make_classes(module):
 	
 	already_got_default = False
 	
@@ -219,11 +219,11 @@ def make_classes(module, module_path):
 		inherits = c_data['inherits']
 		
 		# Header
-		header_dest = os.path.join(module_path, name.lower() + '.h')
+		header_dest = os.path.join(module.path, name.lower() + '.h')
 		write_class_header(header_dest, name, inherits)
 		
 		# Source
-		source_dest = os.path.join(module_path, name.lower() + '.cpp')
+		source_dest = os.path.join(module.path, name.lower() + '.cpp')
 		write_class_source(source_dest, name, inherits)
 		
 		

@@ -22,22 +22,29 @@ class Module:
         ### Generate!
         
         # Essential
-        builders.make_config(self, self.path)
-        builders.make_register_types(self, self.path)
-        builders.make_scsub(self, self.path)
+        builders.make_config(self)
+        builders.make_register_types(self)
+        builders.make_scsub(self)
         
-        builders.make_classes(self, self.path)
+        builders.make_classes(self)
         
         # Optional
         if self.should_initialize_readme():
-            builders.make_readme(self, self.path)
+            builders.make_readme(self)
             
         if self.get_license():
-            builders.make_license(self, self.path)
+            builders.make_license(self)
         
         if self.get_vcs():
-            initialize_repository(self.path, self.get_vcs())
+            self.initialize_repository()
+    
+    def initialize_repository(self):
         
+        for vcs in get_vcs_providers():
+            if not vcs.can_handle(self.get_vcs()):
+                continue
+            vcs.initialize(self.path)
+
     # Config methods
         
     def get_name(self):
@@ -84,11 +91,4 @@ class Module:
         
     def should_include_inside_project(self):
         return self.config['should_include_inside_project']
-
-
-def initialize_repository(path, vcs_name):
-	
-	for vcs in get_vcs_providers():
-		if not vcs.can_handle(vcs_name):
-			continue
-		vcs.initialize(path)
+    

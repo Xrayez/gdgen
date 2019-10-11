@@ -7,9 +7,10 @@ import argparse
 import config
 import builders
 from vcs import get_providers as get_vcs_providers
+from messages import *
 
 
-def init(name, output_path, config_path):
+def init(name, output_path, config_path, force=False):
 	root_dir = os.getcwd()
 	
 	# Load config
@@ -20,17 +21,31 @@ def init(name, output_path, config_path):
 		print_info('config: ' + str(e))
 		return
 		
-	# Create folder
 	if output_path:
 		module_path = os.path.join(output_path, module['short_name'])
 	else:
 		module_path = os.path.join(root_dir, module['short_name'])
-	
+
 	try:
-		os.makedirs(module_path)
-	except FileExistsError:
-		print_info("Module already exists at specified path.")
-		pass
+		if os.path.exists(module_path) and force:
+			revert(module_path)
+
+		generate(module, module_path)
+		
+	except Exception as e:
+		print_info(str(e))
+		print_info(INFO_PASS_FORCE_CMD)
+		
+		
+def revert(path):
+	import shutil
+	shutil.rmtree(path)
+
+
+def generate(module, module_path):
+	
+	# Create folder
+	os.makedirs(module_path)
 
 	# Generate
 	builders.make_config(module, module_path)
@@ -40,7 +55,7 @@ def init(name, output_path, config_path):
 		
 	if module['license']:
 		builders.make_license(module, module_path)
-		
+	
 	if module['version_control']:
 		initialize_repository(module_path, module['version_control'])
 		
@@ -68,5 +83,7 @@ if __name__ == '__main__':
 	parser.add_argument('-o', '--output-path', default="")
 	parser.add_argument('-c', '--config-path', default="configs/default.json")
 	
+	parser.add_argument('-f', '--force', action="store_true")
+	
 	module = parser.parse_args()
-	init(module.name, module.output_path, module.config_path)
+	init(module.name, module.output_path, module.config_path, module.force)

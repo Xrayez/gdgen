@@ -1,0 +1,1 @@
+INFO_PASS_FORCE_CMD = "if you want to overwrite existing module, pass `--force` to the command line."

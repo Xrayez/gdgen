@@ -27,8 +27,8 @@ class FileWriter:
 		self.dest = dest
 		self.f = open(dest, "w", encoding=enc)
 		
-	def write_line(self, line=""):
-		self.f.write(line + "\n")
+	def write_line(self, line="", ident_count=0):
+		self.f.write("\t" * ident_count + line + "\n")
 		
 	def close(self):
 		self.f.close()

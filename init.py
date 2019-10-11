@@ -37,6 +37,8 @@ def init(name, output_path, config_path):
 		pass
 
 	# Generate
+	make_config(module, module_path)
+	
 	if module['readme']['initialize']:
 		make_readme(module, module_path)
 		
@@ -46,6 +48,39 @@ def init(name, output_path, config_path):
 	if module['version_control']:
 		initialize_repository(module_path, module['version_control'])
 	
+	
+def make_config(module, module_path):
+	config_dest = os.path.join(module_path, "config.py")
+	
+	fw = FileWriter(config_dest)
+	
+	fw.write_line()
+	
+	v = module['engine_version']
+	if v == 'latest':
+		fw.write_line("def can_build(env, platform):")
+	elif v == '3.0':
+		fw.write_line("def can_build(env):")
+	
+	fw.write_line("return True", 1)
+	fw.write_line()
+
+	fw.write_line("def configure(env):")
+	fw.write_line("pass", 1)
+	fw.write_line()
+	
+	if module["docs_path"]:
+		fw.write_line("def get_doc_path():")
+		fw.write_line("return \"" + module["docs_path"] + "\"", 1)
+		fw.write_line()
+		
+	if module["icons_path"]:
+		fw.write_line("def get_icons_path():")
+		fw.write_line("return \"" + module["icons_path"] + "\"", 1)
+		fw.write_line()
+		
+	fw.close()
+
 	
 def make_readme(module, module_path):
 	readme_dest = os.path.join(module_path, "README.md")

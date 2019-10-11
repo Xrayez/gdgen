@@ -1,7 +1,7 @@
 import re
 import os
 
-import config
+import common
 
 
 class TemplateWriter:
@@ -38,7 +38,7 @@ class FileWriter:
 		
 		
 def get_default_class_name(module):
-	return ''.join(x for x in module['short_name'].title() if not x.isspace())
+	return ''.join(x for x in module.get_short_name().title() if not x.isspace())
 	
 	
 def get_include_by_type(class_type):
@@ -54,7 +54,7 @@ def make_config(module, module_path):
 	
 	fw.write_line()
 	
-	v = module['engine_version']
+	v = module.get_engine_version()
 	if v == 'latest':
 		fw.write_line("def can_build(env, platform):")
 	elif v == '3.0':
@@ -67,14 +67,14 @@ def make_config(module, module_path):
 	fw.write_line("pass", 1)
 	fw.write_line()
 	
-	if module["docs_path"]:
+	if module.get_docs_path():
 		fw.write_line("def get_doc_path():")
-		fw.write_line("return \"" + module["docs_path"] + "\"", 1)
+		fw.write_line("return \"" + module.get_docs_path() + "\"", 1)
 		fw.write_line()
 		
-	if module["icons_path"]:
+	if module.get_icons_path():
 		fw.write_line("def get_icons_path():")
-		fw.write_line("return \"" + module["icons_path"] + "\"", 1)
+		fw.write_line("return \"" + module.get_icons_path() + "\"", 1)
 		fw.write_line()
 		
 	fw.close()
@@ -85,22 +85,22 @@ def make_readme(module, module_path):
 	
 	fw = FileWriter(readme_dest)
 	
-	fw.write_line("#" + " " + module['name'])
+	fw.write_line("#" + " " + module.get_name())
 	fw.write_line()
 	
-	if module['readme']['include_installation_instructions']:
+	if module.should_include_installation_instructions():
 		
 		fw.write_line("## Installation")
 		fw.write_line()
 		fw.write_line("Before installing, you must be able to")
 		fw.write_line("[compile Godot Engine](https://docs.godotengine.org/en/" \
-				+ module["engine_version"] + "/development/compiling/) from source.")
+				+ module.get_engine_version() + "/development/compiling/) from source.")
 				
 		fw.write_line()
 		
 		fw.write_line("```bash")
-		fw.write_line("# Copy the module under directory named " + module['short_name'] + " (must be exactly that)")
-		fw.write_line("cp " + module['short_name'] + " <godot_path>/modules/" + module['short_name'] + " && cd <godot_path>")
+		fw.write_line("# Copy the module under directory named " + module.get_short_name() + " (must be exactly that)")
+		fw.write_line("cp " + module.get_short_name() + " <godot_path>/modules/" + module.get_short_name() + " && cd <godot_path>")
 		fw.write_line("# Compile the engine manually, for instance:")
 		fw.write_line("scons platform=linux target=release_debug bits=64")
 		fw.write_line("```")
@@ -109,13 +109,13 @@ def make_readme(module, module_path):
 	
 	
 def make_license(module, module_path):
-	license_src = os.path.join(config.licenses_path, module['license']) + ".txt"
+	license_src = os.path.join(common.licenses_path, module.get_license()) + ".txt"
 	license_dest = os.path.join(module_path, "LICENSE.txt")
 	
 	import datetime
 	license_template = {
 		"__YEAR__" : str(datetime.datetime.now().year),
-		"__AUTHOR__" : module['author'],
+		"__AUTHOR__" : module.get_author(),
 	}
 	tw = TemplateWriter(license_src, license_dest)
 	tw.write_out(license_template)
@@ -127,8 +127,8 @@ def make_register_types(module, module_path):
 	reg_types_header_dest = os.path.join(module_path, "register_types.h")
 	header = FileWriter(reg_types_header_dest)
 	
-	header.write_line("void register_" + module['short_name'] + "_types();")
-	header.write_line("void unregister_" + module['short_name'] + "_types();")
+	header.write_line("void register_" + module.get_short_name() + "_types();")
+	header.write_line("void unregister_" + module.get_short_name() + "_types();")
 	header.close()
 	
 	# Source
@@ -138,7 +138,7 @@ def make_register_types(module, module_path):
 	source.write_line("#include \"register_types.h\"")
 	source.write_line()
 	
-	for c in module['classes']:
+	for c in module.get_classes():
 		name = c['name']
 		if not name:
 			name = get_default_class_name(module)
@@ -146,10 +146,10 @@ def make_register_types(module, module_path):
 		
 	source.write_line()
 	
-	source.write_line("void register_" + module['short_name'] + "_types() {")
+	source.write_line("void register_" + module.get_short_name() + "_types() {")
 	source.write_line()
 	
-	for c in module['classes']:
+	for c in module.get_classes():
 		name = c['name']
 		if not name:
 			name = get_default_class_name(module)
@@ -158,7 +158,7 @@ def make_register_types(module, module_path):
 	source.write_line("}")
 	source.write_line()
 	
-	source.write_line("void unregister_" + module['short_name'] + "_types() {")
+	source.write_line("void unregister_" + module.get_short_name() + "_types() {")
 	source.write_line()
 	source.write_line("// nothing to do here", 1)
 	source.write_line("}")
@@ -177,14 +177,14 @@ def make_scsub(module, module_path):
 	scsub.write_line("Import('env_modules')")
 	scsub.write_line()
 
-	env_module = "env_" + module['short_name']
+	env_module = "env_" + module.get_short_name()
 	
 	scsub.write_line(env_module + " = env.Clone()")
 	scsub.write_line()
 	
-	if module['thirdparty_path']:
+	if module.get_thirdparty_path():
 		scsub.write_line("# Thirdparty source files")
-		scsub.write_line("thirdparty_dir = '" + module['thirdparty_path'] + "/'")
+		scsub.write_line("thirdparty_dir = '" + module.get_thirdparty_path() + "/'")
 		scsub.write_line("thirdparty_sources = []")
 		scsub.write_line("thirdparty_sources += Glob(thirdparty_dir + '**/*.cpp')")
 		scsub.write_line("thirdparty_sources += Glob(thirdparty_dir + '**/*.c')")
@@ -208,7 +208,7 @@ def make_classes(module, module_path):
 	
 	already_got_default = False
 	
-	for c_data in module['classes']:
+	for c_data in module.get_classes():
 		name = c_data['name']
 		if not name:
 			if already_got_default:

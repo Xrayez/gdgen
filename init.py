@@ -4,10 +4,11 @@ import os
 import json
 import argparse
 
-import config
+import common
 import builders
 from vcs import get_providers as get_vcs_providers
 from messages import *
+from module_wrap import Module
 
 
 def init(name, output_path, config_path, force=False):
@@ -16,15 +17,16 @@ def init(name, output_path, config_path, force=False):
 	# Load config
 	try:
 		with open(config_path) as config_data:
-			module = json.load(config_data)
+			config = json.load(config_data)
+			module = Module(config)
 	except Exception as e:
 		print_info('config: ' + str(e))
 		return
 		
 	if output_path:
-		module_path = os.path.join(output_path, module['short_name'])
+		module_path = os.path.join(output_path, module.get_short_name())
 	else:
-		module_path = os.path.join(root_dir, module['short_name'])
+		module_path = os.path.join(root_dir, module.get_short_name())
 
 	try:
 		if os.path.exists(module_path) and force:
@@ -47,8 +49,8 @@ def generate(module, module_path):
 	# Initialize directory structure
 	os.makedirs(module_path)
 	
-	if module['thirdparty_path']:
-		thirdparty_dir = os.path.join(module_path, module['thirdparty_path'])
+	if module.get_thirdparty_path():
+		thirdparty_dir = os.path.join(module_path, module.get_thirdparty_path())
 		os.makedirs(thirdparty_dir)
 
 	### Generate!
@@ -61,14 +63,14 @@ def generate(module, module_path):
 	builders.make_classes(module, module_path)
 	
 	# Optional
-	if module['readme']['initialize']:
+	if module.should_initialize_readme():
 		builders.make_readme(module, module_path)
 		
-	if module['license']:
+	if module.get_license():
 		builders.make_license(module, module_path)
 	
-	if module['version_control']:
-		initialize_repository(module_path, module['version_control'])
+	if module.get_vcs():
+		initialize_repository(module_path, module.get_vcs())
 		
 		
 def initialize_repository(module_path, vcs_name):
@@ -81,8 +83,8 @@ def initialize_repository(module_path, vcs_name):
 		
 def open_utf8(filename, mode):
 	return open(filename, mode, encoding="utf-8")
-		
-	
+
+
 def print_info(msg):
 	print(__file__ + ': ' + msg)
 	

@@ -3,7 +3,7 @@ import os
 
 from builders import TemplateWriter
 
-import config
+import common
 
 
 class VCSProvider:
@@ -46,7 +46,7 @@ class VCSGit(VCSProvider):
         
     @classmethod
     def get_templates_path(cls):
-        return os.path.join(config.vcs_path, cls.get_name())
+        return os.path.join(common.vcs_path, cls.get_name())
     
     
 def get_providers():

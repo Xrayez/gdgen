@@ -26,5 +26,5 @@
     "changelog": "keepachangelog.com",
     "continuous_integration": ["travis", "appveyor"],
     
-    "to_be_included_inside_project": true
+    "should_include_inside_project": true
 }

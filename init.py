@@ -47,9 +47,13 @@ def generate(module, module_path):
 	# Create folder
 	os.makedirs(module_path)
 
-	# Generate
-	builders.make_config(module, module_path)
+	### Generate!
 	
+	# Essential
+	builders.make_config(module, module_path)
+	builders.make_register_types(module, module_path)
+	
+	# Optional
 	if module['readme']['initialize']:
 		builders.make_readme(module, module_path)
 		

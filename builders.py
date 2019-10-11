@@ -35,6 +35,10 @@ class FileWriter:
 		
 	def close(self):
 		self.f.close()
+		
+		
+def get_default_class_name(module):
+	return ''.join(x for x in module['short_name'].title() if not x.isspace())
 
 
 def make_config(module, module_path):
@@ -110,3 +114,38 @@ def make_license(module, module_path):
 	tw = TemplateWriter(license_src, license_dest)
 	tw.write_out(license_template)
 	
+	
+def make_register_types(module, module_path):
+	
+	# Header
+	reg_types_header_dest = os.path.join(module_path, "register_types.h")
+	header = FileWriter(reg_types_header_dest)
+	
+	header.write_line("void register_" + module['short_name'] + "_types();")
+	header.write_line("void unregister_" + module['short_name'] + "_types();")
+	header.close()
+	
+	# Source
+	reg_types_source_dest = os.path.join(module_path, "register_types.cpp")
+	source = FileWriter(reg_types_source_dest)
+	
+	source.write_line("#include \"register_types.h\"")
+	source.write_line()
+	source.write_line("void register_" + module['short_name'] + "_types() {")
+	source.write_line()
+	
+	for c in module['classes']:
+		name = c['name']
+		if not name:
+			name = get_default_class_name(module)
+		source.write_line("ClassDB::register_class<" + name + ">();", 1)
+		
+	source.write_line("}")
+	source.write_line()
+	
+	source.write_line("void unregister_" + module['short_name'] + "_types() {")
+	source.write_line()
+	source.write_line("// nothing to do here", 1)
+	source.write_line("}")
+	
+	source.close()

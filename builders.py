@@ -9,7 +9,7 @@ class TemplateWriter:
 		self.src = src
 		self.dest = dest
 		
-	def write_out(self, template):
+	def write_out(self, template={}):
 		with open(self.src, 'r') as src_template:
 			text = src_template.read()
 

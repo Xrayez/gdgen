@@ -2,7 +2,6 @@
     "name": "Godot Module",
     "short_name": "gdmodule",
     "author": "Godot Engine contributors",
-    
     "engine_version": "latest",
     
     "classes": [
@@ -21,10 +20,8 @@
         "include_installation_instructions": true
     },
     "license": "MIT",
-    
     "version_control": "git",
     "changelog": "keepachangelog.com",
     "continuous_integration": ["travis", "appveyor"],
-    
-    "should_include_inside_project": true
+    "to_be_included_inside_project": true
 }

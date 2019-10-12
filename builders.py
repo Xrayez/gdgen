@@ -1,5 +1,6 @@
 import re
 import os
+from pathlib import Path
 
 import common
 
@@ -266,3 +267,7 @@ def write_class_source(source_dest, name, inherits):
 	
 	source.close()
 	
+	
+def make_gdignore(module):
+	gdignore_dest = os.path.join(module.path, ".gdignore")
+	Path(gdignore_dest).touch()

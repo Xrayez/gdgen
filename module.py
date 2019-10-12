@@ -34,6 +34,9 @@ class Module:
             
         if self.get_license():
             builders.make_license(self)
+            
+        if self.to_be_included_inside_project():
+            builders.make_gdignore(self)
         
         if self.get_vcs():
             self.initialize_repository()
@@ -89,6 +92,6 @@ class Module:
     def get_ci(self):
         return self.config['continuous_integration']
         
-    def should_include_inside_project(self):
-        return self.config['should_include_inside_project']
+    def to_be_included_inside_project(self):
+        return self.config['to_be_included_inside_project']
     

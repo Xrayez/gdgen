@@ -36,10 +36,6 @@ class FileWriter:
 		
 	def close(self):
 		self.f.close()
-		
-		
-def get_default_class_name(module):
-	return ''.join(x for x in module.get_short_name().title() if not x.isspace())
 	
 	
 def get_include_by_type(class_type):
@@ -142,7 +138,7 @@ def make_register_types(module):
 	for c in module.get_classes():
 		name = c['name']
 		if not name:
-			name = get_default_class_name(module)
+			name = module.get_default_class_name()
 		source.write_line("#include " + '\"' + name.lower() + ".h" + '\"')
 		
 	source.write_line()
@@ -153,7 +149,7 @@ def make_register_types(module):
 	for c in module.get_classes():
 		name = c['name']
 		if not name:
-			name = get_default_class_name(module)
+			name = module.get_default_class_name()
 		source.write_line("ClassDB::register_class<" + name + ">();", 1)
 		
 	source.write_line("}")
@@ -214,7 +210,7 @@ def make_classes(module):
 		if not name:
 			if already_got_default:
 				continue
-			name = get_default_class_name(module)
+			name = module.get_default_class_name()
 			already_got_default = True
 			
 		inherits = c_data['inherits']

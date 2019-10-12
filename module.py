@@ -95,3 +95,7 @@ class Module:
     def to_be_included_inside_project(self):
         return self.config['to_be_included_inside_project']
     
+    # Config utility methods
+    
+    def get_default_class_name(self):
+	    return ''.join(x for x in self.get_short_name().title() if not x.isspace())

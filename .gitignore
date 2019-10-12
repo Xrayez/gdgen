@@ -5,5 +5,10 @@ __pycache__
 # IDE
 .vscode
 
+# User
+!/configs/user/
+/configs/user/*.json
+
 # Dev
-gdmodule/
+/gdmodule/
+/gdmodule_test/

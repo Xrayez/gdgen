@@ -1,0 +1,28 @@
+{
+    "name": "",
+    "short_name": "",
+    "author": "",
+    
+    "engine_version": "latest",
+    
+    "classes": [
+        {
+            "name": "",
+            "inherits": "Reference",
+            "path": "."
+        }
+    ],
+    "docs_path": "",
+    "icons_path": "",
+    "thirdparty_path": "",
+    
+    "readme": {
+        "initialize": false,
+        "include_installation_instructions": false
+    },
+    "license": "",
+    "version_control": "",
+    "changelog": "",
+    "continuous_integration": [],
+    "to_be_included_inside_project": false
+}

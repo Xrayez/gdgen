@@ -1,0 +1,7 @@
+Here you can find a bunch of pre-installed configuration files:
+
+* `default.json` - most features included.
+* `minimal.json` - create a module with minimal possible features.
+* `test.json` - use for development, testing and example.
+
+You can keep your custom created configuration files at `user` directory.

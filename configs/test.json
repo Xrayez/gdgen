@@ -1,13 +1,18 @@
 {
-    "name": "",
-    "short_name": "",
-    "author": "",
+    "name": "Godot Test Module",
+    "short_name": "gdmodule_test",
+    "author": "Godot Engine contributors",
     
     "engine_version": "latest",
     
     "classes": [
         {
             "name": "",
+            "inherits": "Reference",
+            "path": "."
+        },
+        {
+            "name": "TestClass",
             "inherits": "Reference",
             "path": "."
         }
@@ -24,5 +29,5 @@
     "version_control": "git",
     "changelog": "keepachangelog.com",
     "continuous_integration": ["travis", "appveyor"],
-    "to_be_included_inside_project": false
+    "to_be_included_inside_project": true
 }

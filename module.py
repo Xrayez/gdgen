@@ -16,6 +16,14 @@ class Module:
         # Initialize directory structure
         os.makedirs(self.path)
         
+        if self.get_docs_path():
+            docs_dir = os.path.join(self.path, self.get_docs_path())
+            os.makedirs(docs_dir)
+            
+        if self.get_icons_path():
+            icons_dir = os.path.join(self.path, self.get_icons_path())
+            os.makedirs(icons_dir)
+        
         if self.get_thirdparty_path():
             thirdparty_dir = os.path.join(self.path, self.get_thirdparty_path())
             os.makedirs(thirdparty_dir)

@@ -71,6 +71,18 @@ def make_config(module):
 		fw.write_line("return \"" + module.get_docs_path() + "\"", 1)
 		fw.write_line()
 		
+		fw.write_line("def get_doc_classes():")
+		fw.write_line("return [", 1)
+		
+		for c in module.get_classes():
+			name = c['name']
+			if not name:
+				name = module.get_default_class_name()
+			fw.write_line('\"' + name + '\"' + ',', 2)
+			
+		fw.write_line("]", 1)
+		fw.write_line()
+		
 	if module.get_icons_path():
 		fw.write_line("def get_icons_path():")
 		fw.write_line("return \"" + module.get_icons_path() + "\"", 1)

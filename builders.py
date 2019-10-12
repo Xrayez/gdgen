@@ -51,14 +51,16 @@ def make_config(module):
 	
 	fw.write_line()
 	
-	v = module.get_engine_version()
-	if v == 'latest':
-		fw.write_line("def can_build(env, platform):")
-	elif v == '3.0':
-		fw.write_line("def can_build(env):")
+	ver = module.get_engine_version(False)
+	if ver['major'] >= 3:
+		# 3.0 vs 3.1: https://github.com/godotengine/godot/pull/19275
+		if ver['minor'] >= 1:
+			fw.write_line("def can_build(env, platform):")
+		else:
+			fw.write_line("def can_build(env):")
 	
-	fw.write_line("return True", 1)
-	fw.write_line()
+		fw.write_line("return True", 1)
+		fw.write_line()
 
 	fw.write_line("def configure(env):")
 	fw.write_line("pass", 1)
@@ -87,12 +89,15 @@ def make_readme(module):
 	
 	if module.should_include_installation_instructions():
 		
+		ver = module.get_engine_version()
+		if ver == common.engine_latest_version:
+			ver = "latest"
+		
 		fw.write_line("## Installation")
 		fw.write_line()
 		fw.write_line("Before installing, you must be able to")
-		fw.write_line("[compile Godot Engine](https://docs.godotengine.org/en/" \
-				+ module.get_engine_version() + "/development/compiling/) from source.")
-				
+		fw.write_line("[compile Godot Engine](https://docs.godotengine.org/en/" + ver + "/development/compiling/)")
+		fw.write_line("from source.")
 		fw.write_line()
 		
 		fw.write_line("```bash")
@@ -194,7 +199,19 @@ def make_scsub(module):
 		scsub.write_line("env_thirdparty.add_source_files(env.modules_sources, thirdparty_sources)")
 		scsub.write_line("env_thirdparty.disable_warnings()")
 		scsub.write_line()
-
+		
+	ver = module.get_engine_version(False)
+	cpp_ver = module.get_cpp_version()
+	
+	if ver['major'] >= 3:
+		if ver['minor'] >= 2 and cpp_ver == "c++11":
+			pass # 3.2+ enables C++11 on the whole codebase by default
+			# https://github.com/godotengine/godot/commit/5dae2ea777da5395cf1b1e9a8bc6abc93f6ae6bb
+		else:
+			scsub.write_line("if (not env.msvc):")
+			scsub.write_line(env_module + ".Prepend(CXXFLAGS=['-std=" + cpp_ver + "'])", 1)
+			scsub.write_line()
+	
 	scsub.write_line("# Module source files")
 	scsub.write_line(env_module + ".add_source_files(env.modules_sources, '*.cpp')")
 	

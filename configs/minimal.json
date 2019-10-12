@@ -4,6 +4,7 @@
     "author": "",
     
     "engine_version": "latest",
+    "cpp_version": "c++11",
     
     "classes": [
         {

@@ -1,5 +1,6 @@
 import os
 
+import common
 import builders
 from vcs import get_providers as get_vcs_providers
 
@@ -59,8 +60,25 @@ class Module:
     def get_author(self):
         return self.config['author']
         
-    def get_engine_version(self):
+    def get_engine_version(self, as_string=True):
+        
+        if not as_string:
+            ver_str = self.config['engine_version']
+            
+            if ver_str == 'latest':
+                ver_str = common.engine_latest_version
+                
+            ver_comp = ver_str.split('.')
+            ver = {
+                'major': int(ver_comp[0]),
+                'minor': int(ver_comp[1]),
+            }
+            return ver
+            
         return self.config['engine_version']
+        
+    def get_cpp_version(self):
+        return self.config['cpp_version'].lower()
         
     def get_classes(self):
         return self.config['classes']
@@ -99,3 +117,4 @@ class Module:
     
     def get_default_class_name(self):
 	    return ''.join(x for x in self.get_short_name().title() if not x.isspace())
+    

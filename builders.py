@@ -179,7 +179,7 @@ def make_scsub(module):
 
 	env_module = "env_" + module.get_short_name()
 	
-	scsub.write_line(env_module + " = env.Clone()")
+	scsub.write_line(env_module + " = env_modules.Clone()")
 	scsub.write_line()
 	
 	if module.get_thirdparty_path():

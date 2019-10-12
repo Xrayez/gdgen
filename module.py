@@ -125,4 +125,11 @@ class Module:
     
     def get_default_class_name(self):
 	    return ''.join(x for x in self.get_short_name().title() if not x.isspace())
+        
+    def get_source_dirs(self):
+        dirs = {}
+        for c in self.get_classes():
+            path = c['path']
+            dirs[path] = True
+        return dirs
     

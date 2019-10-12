@@ -10,12 +10,17 @@
         {
             "name": "",
             "inherits": "Reference",
-            "path": "."
+            "path": ""
         },
         {
-            "name": "TestClass",
+            "name": "TestClassA",
             "inherits": "Reference",
-            "path": "."
+            "path": "classes"
+        },
+        {
+            "name": "TestClassB",
+            "inherits": "Reference",
+            "path": "another_classes"
         }
     ],
     "docs_path": "docs",

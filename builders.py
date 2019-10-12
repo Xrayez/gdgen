@@ -222,7 +222,21 @@ def make_scsub(module):
 			scsub.write_line()
 	
 	scsub.write_line("# Module source files")
-	scsub.write_line(env_module + ".add_source_files(env.modules_sources, '*.cpp')")
+	
+	scsub.write_line("source_dirs = [")
+	
+	for path in module.get_source_dirs():
+		if not path:
+			path = "."
+		scsub.write_line("\"" + path + "/" + "\"" + ",", 1)
+		
+	scsub.write_line("]")
+	
+	scsub.write_line(env_module + ".Prepend(CPPPATH=source_dirs)")
+	scsub.write_line("sources = [Glob(d + \"*.cpp\") for d in source_dirs]")
+	scsub.write_line()
+		
+	scsub.write_line(env_module + ".add_source_files(env.modules_sources, sources)")
 	
 	scsub.close()
 	
@@ -240,13 +254,17 @@ def make_classes(module):
 			already_got_default = True
 			
 		inherits = c_data['inherits']
+		class_dir = os.path.join(module.path, c_data['path'])
+		
+		if not os.path.exists(class_dir):
+			os.makedirs(class_dir)
 		
 		# Header
-		header_dest = os.path.join(module.path, name.lower() + '.h')
+		header_dest = os.path.join(class_dir, name.lower() + '.h')
 		write_class_header(header_dest, name, inherits)
 		
 		# Source
-		source_dest = os.path.join(module.path, name.lower() + '.cpp')
+		source_dest = os.path.join(class_dir, name.lower() + '.cpp')
 		write_class_source(source_dest, name, inherits)
 		
 		

@@ -23,7 +23,5 @@
     },
     "license": "MIT",
     "version_control": "git",
-    "changelog": "keepachangelog.com",
-    "continuous_integration": ["travis", "appveyor"],
     "to_be_included_inside_project": false
 }

@@ -46,58 +46,56 @@ def get_include_by_type(class_type):
 
 def make_config(module):
 	config_dest = os.path.join(module.path, "config.py")
+	config = FileWriter(config_dest)
 	
-	fw = FileWriter(config_dest)
-	
-	fw.write_line()
+	config.write_line()
 	
 	ver = module.get_engine_version(False)
 	if ver['major'] >= 3:
 		# 3.0 vs 3.1: https://github.com/godotengine/godot/pull/19275
 		if ver['minor'] >= 1:
-			fw.write_line("def can_build(env, platform):")
+			config.write_line("def can_build(env, platform):")
 		else:
-			fw.write_line("def can_build(env):")
+			config.write_line("def can_build(env):")
 	
-		fw.write_line("return True", 1)
-		fw.write_line()
+		config.write_line("return True", 1)
+		config.write_line()
 
-	fw.write_line("def configure(env):")
-	fw.write_line("pass", 1)
-	fw.write_line()
+	config.write_line("def configure(env):")
+	config.write_line("pass", 1)
+	config.write_line()
 	
 	if module.get_docs_path():
-		fw.write_line("def get_doc_path():")
-		fw.write_line("return \"" + module.get_docs_path() + "\"", 1)
-		fw.write_line()
+		config.write_line("def get_doc_path():")
+		config.write_line("return \"" + module.get_docs_path() + "\"", 1)
+		config.write_line()
 		
-		fw.write_line("def get_doc_classes():")
-		fw.write_line("return [", 1)
+		config.write_line("def get_doc_classes():")
+		config.write_line("return [", 1)
 		
 		for c in module.get_classes():
 			name = c['name']
 			if not name:
 				name = module.get_default_class_name()
-			fw.write_line('\"' + name + '\"' + ',', 2)
+			config.write_line('\"' + name + '\"' + ',', 2)
 			
-		fw.write_line("]", 1)
-		fw.write_line()
+		config.write_line("]", 1)
+		config.write_line()
 		
 	if module.get_icons_path():
-		fw.write_line("def get_icons_path():")
-		fw.write_line("return \"" + module.get_icons_path() + "\"", 1)
-		fw.write_line()
+		config.write_line("def get_icons_path():")
+		config.write_line("return \"" + module.get_icons_path() + "\"", 1)
+		config.write_line()
 		
-	fw.close()
+	config.close()
 
 	
 def make_readme(module):
 	readme_dest = os.path.join(module.path, "README.md")
+	readme = FileWriter(readme_dest)
 	
-	fw = FileWriter(readme_dest)
-	
-	fw.write_line("#" + " " + module.get_name())
-	fw.write_line()
+	readme.write_line("#" + " " + module.get_name())
+	readme.write_line()
 	
 	if module.should_include_installation_instructions():
 		
@@ -105,21 +103,21 @@ def make_readme(module):
 		if ver == common.engine_latest_version:
 			ver = "latest"
 		
-		fw.write_line("## Installation")
-		fw.write_line()
-		fw.write_line("Before installing, you must be able to")
-		fw.write_line("[compile Godot Engine](https://docs.godotengine.org/en/" + ver + "/development/compiling/)")
-		fw.write_line("from source.")
-		fw.write_line()
+		readme.write_line("## Installation")
+		readme.write_line()
+		readme.write_line("Before installing, you must be able to")
+		readme.write_line("[compile Godot Engine](https://docs.godotengine.org/en/" + ver + "/development/compiling/)")
+		readme.write_line("from source.")
+		readme.write_line()
 		
-		fw.write_line("```bash")
-		fw.write_line("# Copy the module under directory named " + module.get_short_name() + " (must be exactly that)")
-		fw.write_line("cp " + module.get_short_name() + " <godot_path>/modules/" + module.get_short_name() + " && cd <godot_path>")
-		fw.write_line("# Compile the engine manually, for instance:")
-		fw.write_line("scons platform=linux target=release_debug bits=64")
-		fw.write_line("```")
+		readme.write_line("```bash")
+		readme.write_line("# Copy the module under directory named " + module.get_short_name() + " (must be exactly that)")
+		readme.write_line("cp " + module.get_short_name() + " <godot_path>/modules/" + module.get_short_name() + " && cd <godot_path>")
+		readme.write_line("# Compile the engine manually, for instance:")
+		readme.write_line("scons platform=linux target=release_debug bits=64")
+		readme.write_line("```")
 	
-	fw.close()
+	readme.close()
 	
 	
 def make_license(module):
@@ -131,8 +129,8 @@ def make_license(module):
 		"__YEAR__" : str(datetime.datetime.now().year),
 		"__AUTHOR__" : module.get_author(),
 	}
-	tw = TemplateWriter(license_src, license_dest)
-	tw.write_out(license_template)
+	license_text = TemplateWriter(license_src, license_dest)
+	license_text.write_out(license_template)
 	
 	
 def make_register_types(module):
@@ -182,7 +180,6 @@ def make_register_types(module):
 
 def make_scsub(module):
 	scsub_dest = os.path.join(module.path, "SCsub")
-	
 	scsub = FileWriter(scsub_dest)
 	
 	scsub.write_line("#!/usr/bin/env python")

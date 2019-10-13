@@ -336,21 +336,22 @@ def update_includes(module):
 	ver = module.get_engine_version(False)
 	
 	include_str = "#include \"%s.h\""
+	basedir = ""
 	
 	if ver['major'] >= 3:
-		includes['Node'] = include_str % "scene/main/node"
-		includes['Node2D'] = include_str % "scene/2d/node_2d"
-		
+		# Core
 		if ver['minor'] >= 1:
 			# https://github.com/godotengine/godot/pull/21978
-			includes['Object'] = include_str % "core/object"
-			includes['Reference'] = include_str % "core/reference"
-			includes['Resource'] = include_str % "core/resource"
-		else:
-			includes['Object'] = include_str % "object"
-			includes['Reference'] = include_str % "reference"
-			includes['Resource'] = include_str % "resource"
+			basedir = "core/"
 			
+		includes['Object'] = include_str % "%sobject" % basedir
+		includes['Reference'] = include_str % "%sreference" % basedir
+		includes['Resource'] = include_str % "%sresource" % basedir
+		
+		# Scene
+		includes['Node'] = include_str % "scene/main/node"
+		includes['Node2D'] = include_str % "scene/2d/node_2d"
+
 
 def get_include_by_type(class_type):
 	if class_type in includes:

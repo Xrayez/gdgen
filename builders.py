@@ -38,10 +38,9 @@ class FileWriter:
 		self.f.close()
 	
 	
-def to_snake_case(camel):
-	# https://stackoverflow.com/a/1176023/
-    s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', camel)
-    return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
+def to_snake_case(name):
+	# https://stackoverflow.com/a/33516645/
+    return re.sub(r'([A-Z]*)([A-Z][a-z]+)', lambda x: (x.group(1) + '_' if x.group(1) else '') + x.group(2) + '_', name).rstrip('_').lower()
 	
 	
 def to_pascal_case(snake):

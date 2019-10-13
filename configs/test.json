@@ -15,12 +15,12 @@
         {
             "name": "NewNode2D",
             "inherits": "Node2D",
-            "path": "classes"
+            "path": "classes_a"
         },
         {
             "name": "NewReference",
             "inherits": "Reference",
-            "path": "another_classes"
+            "path": "classes_b"
         }
     ],
     "docs_path": "docs",

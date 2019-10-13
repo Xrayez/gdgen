@@ -1,35 +1,53 @@
 import methods
 
-# Include type information
-
 includes = {}
+types = {}
 
-def update_includes(module):
-	global includes 
-	includes.clear()
+
+def update(module):
+	# In that order
+	update_types(module)
+	make_includes(module)
+
+
+def update_types(module):
+	global types
+	types.clear()
 	
 	ver = module.get_engine_version(False)
 	
-	include_str = "#include \"%s.h\""
 	basedir = ""
 	
 	if ver['major'] >= 3:
-		# Core
 		if ver['minor'] >= 1:
 			# https://github.com/godotengine/godot/pull/21978
 			basedir = "core/"
 			
-		includes['Object'] = include_str % "%sobject" % basedir
-		includes['Reference'] = include_str % "%sreference" % basedir
-		includes['Resource'] = include_str % "%sresource" % basedir
+		types['Object'] = basedir
+		types['Reference'] = basedir
+		types['Resource'] = basedir
 		
-		# Scene
-		includes['Node'] = include_str % "scene/main/node"
-		includes['Node2D'] = include_str % "scene/2d/node_2d"
+		basedir = "scene/main/"
+		types['Node'] = basedir
+		
+		basedir = "scene/2d/"
+		types['Node2D'] = basedir
+
+
+def make_includes(module):
+	global includes 
+	includes.clear()
+	
+	include_str = "#include \"%s%s.h\""
+	
+	for t, basedir in types.items():
+		class_type = methods.to_snake_case(t)
+		includes[t] = include_str % (basedir, class_type)
 
 
 def get_include(class_type):
 	if class_type in includes:
 		return includes[class_type]
 	else: # fallback
-		return "#include " + "\"" + methods.to_snake_case(class_type) + ".h\""
+		include_str = "#include \"%s.h\""
+		return include_str % methods.to_snake_case(class_type)

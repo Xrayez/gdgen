@@ -41,7 +41,7 @@ class FileWriter:
 
 
 def configure(module):
-	gdtypes.update_includes(module)
+	gdtypes.update(module)
 
 
 def make_config(module):

@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 
 import common
+import gdtypes
 
 
 class TemplateWriter:
@@ -36,8 +37,12 @@ class FileWriter:
 		
 	def close(self):
 		self.f.close()
-	
-	
+
+
+def configure(module):
+	gdtypes.update_includes(module)
+
+
 def to_snake_case(name):
 	# https://stackoverflow.com/a/33516645/
     return re.sub(r'([A-Z]*)([A-Z][a-z]+)', lambda x: (x.group(1) + '_' if x.group(1) else '') + x.group(2) + '_', name).rstrip('_').lower()
@@ -289,7 +294,7 @@ def write_class_header(header_dest, name, underscore_name, inherits):
 	header.write_line("#define " + HEADER_GUARD + "_H")
 	header.write_line()
 	
-	header.write_line(get_include_by_type(inherits))
+	header.write_line(gdtypes.get_include(inherits))
 	header.write_line()
 	
 	header.write_line("class " + name + " : " + "public " + inherits + " {")
@@ -324,37 +329,3 @@ def write_class_source(source_dest, name, underscore_name, inherits):
 def make_gdignore(module):
 	gdignore_dest = os.path.join(module.path, ".gdignore")
 	Path(gdignore_dest).touch()
-
-# Include type information
-
-includes = {}
-
-def update_includes(module):
-	global includes 
-	includes.clear()
-	
-	ver = module.get_engine_version(False)
-	
-	include_str = "#include \"%s.h\""
-	basedir = ""
-	
-	if ver['major'] >= 3:
-		# Core
-		if ver['minor'] >= 1:
-			# https://github.com/godotengine/godot/pull/21978
-			basedir = "core/"
-			
-		includes['Object'] = include_str % "%sobject" % basedir
-		includes['Reference'] = include_str % "%sreference" % basedir
-		includes['Resource'] = include_str % "%sresource" % basedir
-		
-		# Scene
-		includes['Node'] = include_str % "scene/main/node"
-		includes['Node2D'] = include_str % "scene/2d/node_2d"
-
-
-def get_include_by_type(class_type):
-	if class_type in includes:
-		return includes[class_type]
-	else: # fallback
-		return "#include " + "\"" + to_snake_case(class_type) + ".h\""

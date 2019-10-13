@@ -29,7 +29,7 @@ class Module:
             os.makedirs(thirdparty_dir)
 
         ### Generate!
-        builders.update_includes(self)
+        builders.configure(self)
         
         # Essential
         builders.make_config(self)

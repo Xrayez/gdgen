@@ -42,6 +42,18 @@ def get_include_by_type(class_type):
     return {
         'Reference': "#include \"core/reference.h\"",
     }[class_type]
+	
+	
+def to_snake_case(camel):
+	# https://stackoverflow.com/a/1176023/
+    s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', camel)
+    return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
+	
+	
+def to_pascal_case(snake):
+	# https://stackoverflow.com/a/19053800/
+    comp = snake.split('_')
+    return comp[0].title() + ''.join(x.title() for x in comp[1:])
 
 
 def make_config(module):
@@ -151,10 +163,10 @@ def make_register_types(module):
 	source.write_line()
 	
 	for c in module.get_classes():
-		name = c['name']
+		name = to_snake_case(c['name'])
 		if not name:
-			name = module.get_default_class_name()
-		source.write_line("#include " + '\"' + name.lower() + ".h" + '\"')
+			name = module.get_default_class_underscore_name()
+		source.write_line("#include " + '\"' + name + ".h" + '\"')
 		
 	source.write_line()
 	
@@ -247,33 +259,41 @@ def make_classes(module):
 	
 	for c_data in module.get_classes():
 		name = c_data['name']
-		if not name:
+		
+		if not name: # get default
 			if already_got_default:
 				continue
-			name = module.get_default_class_name()
+			class_name = module.get_default_class_name()
+			underscore_name = module.get_short_name()
+			
 			already_got_default = True
+		else:
+			class_name = name
+			underscore_name = to_snake_case(class_name)
 			
 		inherits = c_data['inherits']
 		class_dir = os.path.join(module.path, c_data['path'])
 		
 		if not os.path.exists(class_dir):
 			os.makedirs(class_dir)
-		
+			
 		# Header
-		header_dest = os.path.join(class_dir, name.lower() + '.h')
-		write_class_header(header_dest, name, inherits)
+		header_dest = os.path.join(class_dir, underscore_name + '.h')
+		write_class_header(header_dest, class_name, underscore_name, inherits)
 		
 		# Source
-		source_dest = os.path.join(class_dir, name.lower() + '.cpp')
-		write_class_source(source_dest, name, inherits)
+		source_dest = os.path.join(class_dir, underscore_name + '.cpp')
+		write_class_source(source_dest, class_name, underscore_name, inherits)
 		
 		
-def write_class_header(header_dest, name, inherits):
+def write_class_header(header_dest, name, underscore_name, inherits):
 	
 	header = FileWriter(header_dest)
 	
-	header.write_line("#ifndef " + name.upper() + "_H")
-	header.write_line("#define " + name.upper() + "_H")
+	HEADER_GUARD = underscore_name.upper()
+	
+	header.write_line("#ifndef " + HEADER_GUARD + "_H")
+	header.write_line("#define " + HEADER_GUARD + "_H")
 	header.write_line()
 	
 	header.write_line(get_include_by_type(inherits))
@@ -289,16 +309,16 @@ def write_class_header(header_dest, name, inherits):
 	header.write_line("};")
 	header.write_line()
 	
-	header.write_line("#endif " + "// " + name.upper() + "_H")
+	header.write_line("#endif " + "// " + HEADER_GUARD + "_H")
 	
 	header.close()
 	
 	
-def write_class_source(source_dest, name, inherits):
+def write_class_source(source_dest, name, underscore_name, inherits):
 	
 	source = FileWriter(source_dest)
 	
-	source.write_line("#include " + '\"' + name.lower() + ".h" + '\"')
+	source.write_line("#include " + '\"' + underscore_name + ".h" + '\"')
 	source.write_line()
 	
 	source.write_line("void " + name + "::_bind_methods() {")

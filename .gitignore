@@ -9,6 +9,7 @@ __pycache__
 !/configs/user/
 /configs/user/*.json
 
-# Dev
+# Dev/Test
 /gdmodule/
 /gdmodule_test/
+/gdmodule_test_2d/

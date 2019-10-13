@@ -22,6 +22,10 @@ class VCSProvider:
     @classmethod
     def can_handle(cls, name):
         return cls.get_name() == name
+        
+    @staticmethod
+    def get_author():
+        return ""
     
     
 class VCSGit(VCSProvider):
@@ -46,7 +50,14 @@ class VCSGit(VCSProvider):
     @classmethod
     def get_templates_path(cls):
         return os.path.join(common.vcs_path, cls.get_name())
-    
+        
+    @staticmethod
+    def get_author():
+        git_author = ['git', 'config', 'user.name']
+        output = subprocess.check_output(git_author, shell=True)
+        author = output.decode("utf-8").strip("\n")
+        return author
+        
     
 def get_providers():
     return [VCSGit]

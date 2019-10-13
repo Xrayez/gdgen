@@ -43,7 +43,15 @@ class Module:
             builders.make_readme(self)
             
         if self.get_license():
-            builders.make_license(self)
+            author = self.get_author()
+            
+            if not author: # try harder
+                for vcs in get_vcs_providers():
+                    author = vcs.get_author()
+                    if author:
+                        break
+            
+            builders.make_license(self, author)
             
         if self.to_be_included_inside_project():
             builders.make_gdignore(self)

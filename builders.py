@@ -125,14 +125,14 @@ def make_readme(module):
 	readme.close()
 	
 	
-def make_license(module):
+def make_license(module, author):
 	license_src = os.path.join(common.licenses_path, module.get_license()) + ".txt"
 	license_dest = os.path.join(module.path, "LICENSE.txt")
 	
 	import datetime
 	license_template = {
 		"__YEAR__" : str(datetime.datetime.now().year),
-		"__AUTHOR__" : module.get_author(),
+		"__AUTHOR__" : author,
 	}
 	license_text = TemplateWriter(license_src, license_dest)
 	license_text.write_out(license_template)

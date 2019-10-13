@@ -1,3 +1,5 @@
+import methods
+
 # Include type information
 
 includes = {}
@@ -30,4 +32,4 @@ def get_include(class_type):
 	if class_type in includes:
 		return includes[class_type]
 	else: # fallback
-		return "#include " + "\"" + to_snake_case(class_type) + ".h\""
+		return "#include " + "\"" + methods.to_snake_case(class_type) + ".h\""

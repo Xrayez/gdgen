@@ -1,7 +1,9 @@
 import os
 
 import common
+import methods
 import builders
+
 from vcs import get_providers as get_vcs_providers
 
 
@@ -133,10 +135,10 @@ class Module:
     # Config utility methods
     
     def get_default_class_name(self):
-        return builders.to_pascal_case(self.get_short_name())
+        return methods.to_pascal_case(self.get_short_name())
         
     def get_default_class_underscore_name(self):
-	    return builders.to_snake_case(self.get_short_name())
+	    return methods.to_snake_case(self.get_short_name())
         
     def get_source_dirs(self):
         dirs = {}

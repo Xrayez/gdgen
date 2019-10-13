@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 
 import common
+import methods
 import gdtypes
 
 
@@ -41,17 +42,6 @@ class FileWriter:
 
 def configure(module):
 	gdtypes.update_includes(module)
-
-
-def to_snake_case(name):
-	# https://stackoverflow.com/a/33516645/
-    return re.sub(r'([A-Z]*)([A-Z][a-z]+)', lambda x: (x.group(1) + '_' if x.group(1) else '') + x.group(2) + '_', name).rstrip('_').lower()
-	
-	
-def to_pascal_case(snake):
-	# https://stackoverflow.com/a/19053800/
-    comp = snake.split('_')
-    return comp[0].title() + ''.join(x.title() for x in comp[1:])
 
 
 def make_config(module):
@@ -161,7 +151,7 @@ def make_register_types(module):
 	source.write_line()
 	
 	for c in module.get_classes():
-		name = to_snake_case(c['name'])
+		name = methods.to_snake_case(c['name'])
 		if not name:
 			name = module.get_default_class_underscore_name()
 		source.write_line("#include " + '\"' + name + ".h" + '\"')
@@ -267,7 +257,7 @@ def make_classes(module):
 			already_got_default = True
 		else:
 			class_name = name
-			underscore_name = to_snake_case(class_name)
+			underscore_name = methods.to_snake_case(class_name)
 			
 		inherits = c_data['inherits']
 		class_dir = os.path.join(module.path, c_data['path'])

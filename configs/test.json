@@ -13,12 +13,12 @@
             "path": ""
         },
         {
-            "name": "TestClassA",
-            "inherits": "Reference",
+            "name": "NewNode2D",
+            "inherits": "Node2D",
             "path": "classes"
         },
         {
-            "name": "TestClassB",
+            "name": "NewReference",
             "inherits": "Reference",
             "path": "another_classes"
         }

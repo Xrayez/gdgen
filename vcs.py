@@ -1,9 +1,8 @@
 import subprocess
 import os
 
-from builders import TemplateWriter
-
 import common
+from builders import TemplateWriter
 
 
 class VCSProvider:

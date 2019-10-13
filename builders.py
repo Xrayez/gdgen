@@ -38,12 +38,6 @@ class FileWriter:
 		self.f.close()
 	
 	
-def get_include_by_type(class_type):
-    return {
-        'Reference': "#include \"core/reference.h\"",
-    }[class_type]
-	
-	
 def to_snake_case(camel):
 	# https://stackoverflow.com/a/1176023/
     s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', camel)
@@ -331,3 +325,36 @@ def write_class_source(source_dest, name, underscore_name, inherits):
 def make_gdignore(module):
 	gdignore_dest = os.path.join(module.path, ".gdignore")
 	Path(gdignore_dest).touch()
+
+# Include type information
+
+includes = {}
+
+def update_includes(module):
+	global includes 
+	includes.clear()
+	
+	ver = module.get_engine_version(False)
+	
+	include_str = "#include \"%s.h\""
+	
+	if ver['major'] >= 3:
+		includes['Node'] = include_str % "scene/main/node"
+		includes['Node2D'] = include_str % "scene/2d/node_2d"
+		
+		if ver['minor'] >= 1:
+			# https://github.com/godotengine/godot/pull/21978
+			includes['Object'] = include_str % "core/object"
+			includes['Reference'] = include_str % "core/reference"
+			includes['Resource'] = include_str % "core/resource"
+		else:
+			includes['Object'] = include_str % "object"
+			includes['Reference'] = include_str % "reference"
+			includes['Resource'] = include_str % "resource"
+			
+
+def get_include_by_type(class_type):
+	if class_type in includes:
+		return includes[class_type]
+	else: # fallback
+		return "#include " + "\"" + to_snake_case(class_type) + ".h\""

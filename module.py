@@ -112,10 +112,7 @@ class Module:
         return self.config['thirdparty_path']
         
     def should_initialize_readme(self):
-        return self.config['readme']['initialize']
-        
-    def should_include_installation_instructions(self):
-        return self.config['readme']['include_installation_instructions']
+        return self.config['readme']
         
     def get_license(self):
         return self.config['license']

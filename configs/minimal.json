@@ -17,11 +17,9 @@
     "icons_path": "",
     "thirdparty_path": "",
     
-    "readme": {
-        "initialize": false,
-        "include_installation_instructions": false
-    },
+    "readme": false,
     "license": "",
+    
     "version_control": "",
     "to_be_included_inside_project": false
 }

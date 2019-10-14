@@ -27,11 +27,10 @@
     "icons_path": "editor/icons",
     "thirdparty_path": "thirdparty",
     
-    "readme": {
-        "initialize": true,
-        "include_installation_instructions": true
-    },
+    "readme": true,
     "license": "MIT",
+    
     "version_control": "git",
+    
     "to_be_included_inside_project": true
 }

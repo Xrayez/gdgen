@@ -97,25 +97,23 @@ def make_readme(module):
 	readme.write_line("#" + " " + module.get_name())
 	readme.write_line()
 	
-	if module.should_include_installation_instructions():
-		
-		ver = module.get_engine_version()
-		if ver == common.engine_latest_version:
-			ver = "latest"
-		
-		readme.write_line("## Installation")
-		readme.write_line()
-		readme.write_line("Before installing, you must be able to")
-		readme.write_line("[compile Godot Engine](https://docs.godotengine.org/en/" + ver + "/development/compiling/)")
-		readme.write_line("from source.")
-		readme.write_line()
-		
-		readme.write_line("```bash")
-		readme.write_line("# Copy the module under directory named " + module.get_internal_name() + " (must be exactly that)")
-		readme.write_line("cp " + module.get_internal_name() + " <godot_path>/modules/" + module.get_internal_name() + " && cd <godot_path>")
-		readme.write_line("# Compile the engine manually, for instance:")
-		readme.write_line("scons platform=linux target=release_debug bits=64")
-		readme.write_line("```")
+	ver = module.get_engine_version()
+	if ver == common.engine_latest_version:
+		ver = "latest"
+	
+	readme.write_line("## Installation")
+	readme.write_line()
+	readme.write_line("Before installing, you must be able to")
+	readme.write_line("[compile Godot Engine](https://docs.godotengine.org/en/" + ver + "/development/compiling/)")
+	readme.write_line("from source.")
+	readme.write_line()
+	
+	readme.write_line("```bash")
+	readme.write_line("# Copy the module under directory named " + module.get_internal_name() + " (must be exactly that)")
+	readme.write_line("cp " + module.get_internal_name() + " <godot_path>/modules/" + module.get_internal_name() + " && cd <godot_path>")
+	readme.write_line("# Compile the engine manually, for instance:")
+	readme.write_line("scons platform=linux target=release_debug bits=64")
+	readme.write_line("```")
 	
 	readme.close()
 	

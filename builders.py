@@ -225,7 +225,7 @@ def make_scsub(module):
 	
 	for path in module.get_source_dirs():
 		if not path:
-			path = "."
+			continue
 		scsub.write_line("\"" + path + "/" + "\"" + ",", 1)
 		
 	scsub.write_line("]")

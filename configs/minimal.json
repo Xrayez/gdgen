@@ -6,13 +6,6 @@
     "engine_version": "latest",
     "cpp_version": "c++11",
     
-    "classes": [
-        {
-            "name": "",
-            "inherits": "Reference",
-            "path": ""
-        }
-    ],
     "docs_path": "",
     "icons_path": "",
     "thirdparty_path": "",

@@ -138,8 +138,9 @@ class Module:
 	    return methods.to_snake_case(self.get_internal_name())
         
     def get_source_dirs(self):
-        dirs = {}
+        dirs = ['.']
+        
         for c in self.get_classes():
-            path = c['path']
-            dirs[path] = True
+            dirs.append(c['path'])
+            
         return dirs

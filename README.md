@@ -29,7 +29,7 @@ python init.py [-o <output_path>]  [-c <custom_config_path>]
 1. Fill out [configs/default.json](configs/default.json) to suite your needs.
    The first two fields are required to fill:
    * `name` - descriptive name of the module;
-   * `short_name` - internal name of the module (lowercase);
+   * `internal_name` - internal name of the module (lowercase);
    * `author` - your name, organization's name etc (optional).
 
 2. Run `init.py`:

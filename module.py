@@ -73,8 +73,8 @@ class Module:
     def get_name(self):
         return self.config['name']
         
-    def get_short_name(self):
-        return self.config['short_name'].lower()
+    def get_internal_name(self):
+        return self.config['internal_name'].lower()
         
     def get_author(self):
         return self.config['author']
@@ -135,10 +135,10 @@ class Module:
     # Config utility methods
     
     def get_default_class_name(self):
-        return methods.to_pascal_case(self.get_short_name())
+        return methods.to_pascal_case(self.get_internal_name())
         
     def get_default_class_underscore_name(self):
-	    return methods.to_snake_case(self.get_short_name())
+	    return methods.to_snake_case(self.get_internal_name())
         
     def get_source_dirs(self):
         dirs = {}

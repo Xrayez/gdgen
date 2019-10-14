@@ -111,8 +111,8 @@ def make_readme(module):
 		readme.write_line()
 		
 		readme.write_line("```bash")
-		readme.write_line("# Copy the module under directory named " + module.get_short_name() + " (must be exactly that)")
-		readme.write_line("cp " + module.get_short_name() + " <godot_path>/modules/" + module.get_short_name() + " && cd <godot_path>")
+		readme.write_line("# Copy the module under directory named " + module.get_internal_name() + " (must be exactly that)")
+		readme.write_line("cp " + module.get_internal_name() + " <godot_path>/modules/" + module.get_internal_name() + " && cd <godot_path>")
 		readme.write_line("# Compile the engine manually, for instance:")
 		readme.write_line("scons platform=linux target=release_debug bits=64")
 		readme.write_line("```")
@@ -139,8 +139,8 @@ def make_register_types(module):
 	reg_types_header_dest = os.path.join(module.path, "register_types.h")
 	header = FileWriter(reg_types_header_dest)
 	
-	header.write_line("void register_" + module.get_short_name() + "_types();")
-	header.write_line("void unregister_" + module.get_short_name() + "_types();")
+	header.write_line("void register_" + module.get_internal_name() + "_types();")
+	header.write_line("void unregister_" + module.get_internal_name() + "_types();")
 	header.close()
 	
 	# Source
@@ -158,7 +158,7 @@ def make_register_types(module):
 		
 	source.write_line()
 	
-	source.write_line("void register_" + module.get_short_name() + "_types() {")
+	source.write_line("void register_" + module.get_internal_name() + "_types() {")
 	source.write_line()
 	
 	for c in module.get_classes():
@@ -170,7 +170,7 @@ def make_register_types(module):
 	source.write_line("}")
 	source.write_line()
 	
-	source.write_line("void unregister_" + module.get_short_name() + "_types() {")
+	source.write_line("void unregister_" + module.get_internal_name() + "_types() {")
 	source.write_line()
 	source.write_line("// nothing to do here", 1)
 	source.write_line("}")
@@ -188,7 +188,7 @@ def make_scsub(module):
 	scsub.write_line("Import('env_modules')")
 	scsub.write_line()
 
-	env_module = "env_" + module.get_short_name()
+	env_module = "env_" + module.get_internal_name()
 	
 	scsub.write_line(env_module + " = env_modules.Clone()")
 	scsub.write_line()
@@ -252,7 +252,7 @@ def make_classes(module):
 			if already_got_default:
 				continue
 			class_name = module.get_default_class_name()
-			underscore_name = module.get_short_name()
+			underscore_name = module.get_internal_name()
 			
 			already_got_default = True
 		else:

@@ -9,7 +9,7 @@ from messages import *
 from module import Module
 
 
-def init(name, short_name, config_path, output_path, force=False):
+def init(name, internal_name, config_path, output_path, force=False):
 	# Load module config
 	try:
 		with open(config_path) as config_data:
@@ -21,8 +21,8 @@ def init(name, short_name, config_path, output_path, force=False):
 	# Override some required config values if set via command line
 	if name:
 		config['name'] = name
-	if short_name:
-		config['short_name'] = short_name
+	if internal_name:
+		config['internal_name'] = internal_name
 	
 	# Validate config
 	try:
@@ -32,9 +32,9 @@ def init(name, short_name, config_path, output_path, force=False):
 		return
 		
 	if output_path:
-		module_path = os.path.join(output_path, config['short_name'])
+		module_path = os.path.join(output_path, config['internal_name'])
 	else:
-		module_path = os.path.join(os.getcwd(), config['short_name'])
+		module_path = os.path.join(os.getcwd(), config['internal_name'])
 	
 	# Generate module
 	m = Module(config, module_path)
@@ -53,7 +53,7 @@ def init(name, short_name, config_path, output_path, force=False):
 def validate_config(config):
 	required = [
 		'name', 
-		'short_name'
+		'internal_name'
 	]
 	validated = []
 	
@@ -83,7 +83,7 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	
 	parser.add_argument('-n', '--name', default="")
-	parser.add_argument('-s', '--short-name', default="")
+	parser.add_argument('-s', '--internal-name', default="")
 	
 	parser.add_argument('-c', '--config-path', default="configs/default.json")
 	parser.add_argument('-o', '--output-path', default="")
@@ -92,5 +92,5 @@ if __name__ == '__main__':
 	
 	module = parser.parse_args()
 	
-	init(module.name, module.short_name, 
+	init(module.name, module.internal_name, 
 			module.config_path, module.output_path, module.force)

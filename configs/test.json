@@ -1,6 +1,6 @@
 {
     "name": "Godot Test Module",
-    "short_name": "gdmodule_test_2d",
+    "internal_name": "gdmodule_test_2d",
     "author": "Godot Engine contributors",
     
     "engine_version": "latest",

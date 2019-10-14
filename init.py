@@ -9,7 +9,7 @@ from messages import *
 from module import Module
 
 
-def init(name, short_name, output_path, config_path, force=False):
+def init(name, short_name, config_path, output_path, force=False):
 	# Load module config
 	try:
 		with open(config_path) as config_data:
@@ -85,12 +85,12 @@ if __name__ == '__main__':
 	parser.add_argument('-n', '--name', default="")
 	parser.add_argument('-s', '--short-name', default="")
 	
-	parser.add_argument('-o', '--output-path', default="")
 	parser.add_argument('-c', '--config-path', default="configs/default.json")
+	parser.add_argument('-o', '--output-path', default="")
 	
 	parser.add_argument('-f', '--force', action="store_true")
 	
 	module = parser.parse_args()
 	
 	init(module.name, module.short_name, 
-			module.output_path, module.config_path, module.force)
+			module.config_path, module.output_path, module.force)

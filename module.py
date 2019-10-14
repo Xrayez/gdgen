@@ -71,19 +71,19 @@ class Module:
     # Config methods
         
     def get_name(self):
-        return self.config['name']
+        return self.config.get('name', '')
         
     def get_internal_name(self):
-        return self.config['internal_name'].lower()
+        return self.config.get('internal_name', '').lower()
         
     def get_author(self):
-        return self.config['author']
+        return self.config.get('author', '')
         
     def get_engine_version(self, as_string=True):
         
+        ver_str = self.config.get('engine_version', 'latest')
+        
         if not as_string:
-            ver_str = self.config['engine_version']
-            
             if ver_str == 'latest':
                 ver_str = common.engine_latest_version
                 
@@ -94,40 +94,40 @@ class Module:
             }
             return ver
             
-        return self.config['engine_version']
-        
+        return ver_str
+    
     def get_cpp_version(self):
-        return self.config['cpp_version'].lower()
+        return self.config.get('cpp_version', 'c++11').lower()
         
     def get_classes(self):
-        return self.config['classes']
+        return self.config.get('classes', [])
         
     def get_docs_path(self):
-        return self.config['docs_path']
+        return self.config.get('docs_path', '')
         
     def get_icons_path(self):
-        return self.config['icons_path']
+        return self.config.get('icons_path', '')
         
     def get_thirdparty_path(self):
-        return self.config['thirdparty_path']
+        return self.config.get('thirdparty_path', '')
         
     def should_initialize_readme(self):
-        return self.config['readme']
+        return self.config.get('readme', '')
         
     def get_license(self):
-        return self.config['license']
+        return self.config.get('license', '')
         
     def get_vcs(self):
-        return self.config['version_control']
+        return self.config.get('version_control', '')
         
     def get_changelog(self):
-        return self.config['changelog']
+        return self.config.get('changelog', '')
         
     def get_ci(self):
-        return self.config['continuous_integration']
+        return self.config.get('continuous_integration', '')
         
     def to_be_included_inside_project(self):
-        return self.config['to_be_included_inside_project']
+        return self.config.get('to_be_included_inside_project', '')
     
     # Config utility methods
     

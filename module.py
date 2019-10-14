@@ -47,11 +47,14 @@ class Module:
         if self.get_license():
             author = self.get_author()
             
-            if not author: # try harder
-                for vcs in get_vcs_providers():
-                    author = vcs.get_author()
-                    if author:
-                        break
+            if not author:
+                try:
+                    for vcs in get_vcs_providers():
+                        author = vcs.get_author()
+                        if author:
+                            break
+                except:
+                    pass
             
             builders.make_license(self, author)
             
@@ -59,7 +62,11 @@ class Module:
             builders.make_gdignore(self)
         
         if self.get_vcs():
-            self.initialize_repository()
+            try:
+                self.initialize_repository()
+            except:
+                pass
+            
     
     def initialize_repository(self):
         

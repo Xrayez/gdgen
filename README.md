@@ -31,14 +31,14 @@ gdmodule.py [-n NAME] [-s INTERNAL_NAME] [-c CONFIG_PATH] [-o OUTPUT_PATH]
     specified location, or use different configuration file:
     
     ```bash
-    python gdmodule.py -o "~/src/godot/modules/" -c "~/my_config.json"
+    python gdmodule.py -o ~/src/godot/modules/ -c ~/my_config.json
     ```
 
 ### Examples
 
 ```bash
 # Use created config file and generate the module directly to Godot modules
-gdmodule.py -c configs/test.json -o ~/src/godot/modules/
+gdmodule.py -c tests/configs/sample.json -o ~/src/godot/modules/
 
 # Use default config file, but fill the required fields manually
 gdmodule.py -n MyModule -s my_module

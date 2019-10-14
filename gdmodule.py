@@ -5,11 +5,15 @@ import json
 import argparse
 
 import common
+import methods
 from messages import *
 from module import Module
 
+config_default_path = "configs/default.json"
+config_minimal_path = "configs/minimal.json"
 
-def init(name, internal_name, config_path, output_path, force=False):
+
+def init(name, internal_name, config_path=config_default_path, output_path="", force=False):
 	# Load module config
 	try:
 		with open(config_path) as config_data:
@@ -23,6 +27,9 @@ def init(name, internal_name, config_path, output_path, force=False):
 		config['name'] = name
 	if internal_name:
 		config['internal_name'] = internal_name
+		
+	# Ensure Godot's convention is followed for module naming
+	config['internal_name'] = methods.to_snake_case(config['internal_name'])
 	
 	# Validate config
 	try:
@@ -68,7 +75,15 @@ def validate_config(config):
 	for param in required:
 		if not config[param]:
 			raise ValueError("Required config parameter not set: %s" % param)
+		
+		
+def get_default_config_path():
+	return config_default_path
 	
+	
+def get_minimal_config_path():
+	return config_minimal_path
+
 		
 def deinit(path):
 	import shutil
@@ -85,7 +100,7 @@ if __name__ == '__main__':
 	parser.add_argument('-n', '--name', default="")
 	parser.add_argument('-s', '--internal-name', default="")
 	
-	parser.add_argument('-c', '--config-path', default="configs/default.json")
+	parser.add_argument('-c', '--config-path', default=config_default_path)
 	parser.add_argument('-o', '--output-path', default="")
 	
 	parser.add_argument('-f', '--force', action="store_true")

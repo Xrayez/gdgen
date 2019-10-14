@@ -1,9 +1,11 @@
 # Godot Module
 
+[![Build Status](https://travis-ci.com/Xrayez/gdmodule.svg?branch=master)](https://travis-ci.com/Xrayez/gdmodule)
+
 *Version: 2.0-alpha*
 
 An advanced, easy-to-use, configurable C++ module generator which can create 
-necessary files to get started with module development for 
+necessary files to get started with/speed up module development for 
 [Godot Engine 3.0+](https://github.com/godotengine/godot).
 
 ### Requirements

@@ -1,4 +1,4 @@
-# Godot module generator
+# Godot Module
 
 *Version: 2.0-alpha*
 
@@ -14,34 +14,34 @@ necessary files to get started with module development for
 ### Usage
 
 ```bash
-init.py [-n NAME] [-s INTERNAL_NAME] [-c CONFIG_PATH] [-o OUTPUT_PATH]
+gdmodule.py [-n NAME] [-s INTERNAL_NAME] [-c CONFIG_PATH] [-o OUTPUT_PATH]
 ```
 
 ### Step-by-step
 
 1. Fill out [configs/default.json](configs/default.json) to suite your needs.
 
-2. Run `init.py`:
+2. Run `gdmodule.py`:
 
     ```bash
-    python init.py
+    python gdmodule.py
     ```
     
-    Optionally, pass additional arguments to output the generated module at 
+    Alternatively, pass additional arguments to output the generated module at 
     specified location, or use different configuration file:
     
     ```bash
-    python init.py -o "~/src/godot/modules/" -c "~/my_config.json"
+    python gdmodule.py -o "~/src/godot/modules/" -c "~/my_config.json"
     ```
 
 ### Examples
 
 ```bash
 # Use created config file and generate the module directly to Godot modules
-init.py -c configs/test.json -o ~/src/godot/modules/
+gdmodule.py -c configs/test.json -o ~/src/godot/modules/
 
 # Use default config file, but fill the required fields manually
-init.py -n MyModule -s my_module
+gdmodule.py -n MyModule -s my_module
 ```
 
 # Config

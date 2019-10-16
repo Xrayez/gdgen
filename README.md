@@ -10,7 +10,7 @@ necessary files to get started with/speed up module development for
 
 ### Requirements
 
-* Python 3.5+
+* Python 3.6+
 * Git (optional)
 
 ### Usage

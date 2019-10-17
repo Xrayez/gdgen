@@ -6,11 +6,11 @@ __pycache__
 .vscode
 
 # User
-!/configs/user/
-/configs/user/*.json
+!/gdgen/configs/user/
+/gdgen/configs/user/*.json
 
 # Dev/Test
-/gdmodule/
-/gdmodule_test/
-/gdmodule_test_2d/
-/tests/modules/
+/gdgen/gdmodule/
+/gdgen/gdmodule_test/
+/gdgen/gdmodule_test_2d/
+/gdgen/tests/modules/

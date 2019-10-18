@@ -13,6 +13,11 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Xrayez/gdmodule",
     packages=setuptools.find_packages(),
+    entry_points = {
+        "console_scripts": [
+            "gdgen = gdgen.cli:main"
+        ]
+    },
     include_package_data=True,
     license="MIT",
     classifiers=[

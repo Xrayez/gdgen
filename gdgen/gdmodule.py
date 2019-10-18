@@ -2,22 +2,24 @@
 
 import os
 import json
-import argparse
 
-import common
-import methods
-from messages import *
-from module import Module
+import gdgen
 
-config_default_path = "configs/default.json"
-config_minimal_path = "configs/minimal.json"
+from gdgen import common
+from gdgen import methods
+from gdgen.messages import *
+from gdgen.module import Module
 
 
-def init(name, internal_name, config_path=config_default_path, output_path="", force=False):
+def init(name, internal_name, config_path=common.config_default_path, output_path="", force=False):
 	# Load module config
 	try:
+		if not os.path.isabs(config_path):
+			config_path = os.path.join(gdgen.get_path(), config_path)
+		
 		with open(config_path) as config_data:
 			config = json.load(config_data)
+			
 	except Exception as e:
 		print_info('config: ' + str(e))
 		return
@@ -78,11 +80,11 @@ def validate_config(config):
 		
 		
 def get_default_config_path():
-	return config_default_path
+	return common.config_default_path
 	
 	
 def get_minimal_config_path():
-	return config_minimal_path
+	return common.config_minimal_path
 
 		
 def deinit(path):
@@ -92,20 +94,3 @@ def deinit(path):
 
 def print_info(msg):
 	print(__file__ + ': ' + msg)
-	
-
-if __name__ == '__main__':
-	parser = argparse.ArgumentParser()
-	
-	parser.add_argument('-n', '--name', default="")
-	parser.add_argument('-s', '--internal-name', default="")
-	
-	parser.add_argument('-c', '--config-path', default=config_default_path)
-	parser.add_argument('-o', '--output-path', default="")
-	
-	parser.add_argument('-f', '--force', action="store_true")
-	
-	module = parser.parse_args()
-	
-	init(module.name, module.internal_name, 
-			module.config_path, module.output_path, module.force)

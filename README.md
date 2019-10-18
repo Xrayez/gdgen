@@ -4,8 +4,8 @@
 
 *Version: 2.0-alpha*
 
-An advanced, easy-to-use, configurable C++ module generator which can create 
-necessary files to get started with/speed up module development for 
+An advanced, configurable C++ module generator which can create necessary files
+to get started with or speed up module development for
 [Godot Engine 3.0+](https://github.com/godotengine/godot).
 
 ### Requirements
@@ -16,34 +16,34 @@ necessary files to get started with/speed up module development for
 ### Usage
 
 ```bash
-gdmodule.py [-n NAME] [-s INTERNAL_NAME] [-c CONFIG_PATH] [-o OUTPUT_PATH]
+python -m gdgen [-n NAME] [-s INTERNAL_NAME] [-c CONFIG_PATH] [-o OUTPUT_PATH]
 ```
 
 ### Step-by-step
 
 1. Fill out [configs/default.json](configs/default.json) to suite your needs.
 
-2. Run `gdmodule.py`:
+2. Run `gdgen`:
 
     ```bash
-    python gdmodule.py
+    python -m gdgen
     ```
     
     Alternatively, pass additional arguments to output the generated module at 
     specified location, or use different configuration file:
     
     ```bash
-    python gdmodule.py -o ~/src/godot/modules/ -c ~/my_config.json
+    python -m gdgen -o ~/src/godot/modules/ -c ~/my_config.json
     ```
 
 ### Examples
 
 ```bash
 # Use created config file and generate the module directly to Godot modules
-gdmodule.py -c tests/configs/sample.json -o ~/src/godot/modules/
+python -m gdgen -c tests/configs/sample.json -o ~/src/godot/modules/
 
 # Use default config file, but fill the required fields manually
-gdmodule.py -n MyModule -s my_module
+python -m gdgen -n MyModule -s my_module
 ```
 
 # Config

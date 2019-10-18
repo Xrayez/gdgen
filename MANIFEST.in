@@ -1,0 +1,5 @@
+graft gdgen
+prune gdgen/tests/modules
+
+include LICENSE.md
+include README.md

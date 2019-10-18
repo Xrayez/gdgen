@@ -1,8 +1,8 @@
 import subprocess
 import os
 
-import common
-from builders import TemplateWriter
+from gdgen import common
+from gdgen.builders import TemplateWriter
 
 
 class VCSProvider:

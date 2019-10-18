@@ -1,10 +1,12 @@
 import os
 
-import common
-import methods
-import builders
+import gdgen
 
-from vcs import get_providers as get_vcs_providers
+from gdgen import common
+from gdgen import methods
+from gdgen import builders
+
+from gdgen.vcs import get_providers as get_vcs_providers
 
 
 class Module:

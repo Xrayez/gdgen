@@ -1,4 +1,4 @@
-import methods
+from gdgen import methods
 
 includes = {}
 types = {}

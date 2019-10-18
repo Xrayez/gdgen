@@ -2,9 +2,10 @@ import re
 import os
 from pathlib import Path
 
-import common
-import methods
-import gdtypes
+import gdgen
+from gdgen import common
+from gdgen import methods
+from gdgen import gdtypes
 
 
 class TemplateWriter:
@@ -119,7 +120,7 @@ def make_readme(module):
 	
 	
 def make_license(module, author):
-	license_src = os.path.join(common.licenses_path, module.get_license()) + ".txt"
+	license_src = os.path.join(gdgen.get_path(), common.licenses_path, module.get_license()) + ".txt"
 	license_dest = os.path.join(module.path, "LICENSE.txt")
 	
 	import datetime

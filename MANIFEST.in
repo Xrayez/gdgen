@@ -3,3 +3,5 @@ prune gdgen/tests/modules
 
 include LICENSE.md
 include README.md
+
+global-exclude *.py[cod] __pycache__/* *.so *.dylib

@@ -4,14 +4,23 @@
 
 *Version: 2.0-alpha*
 
-An advanced, configurable C++ module generator which can create necessary files
-to get started with or speed up module development for
-[Godot Engine 3.0+](https://github.com/godotengine/godot).
+An advanced, configurable code generator which aims to automate some aspects of
+[Godot Engine](https://github.com/godotengine/godot) development, namely:
+
+- [x] creating C++ modules;
+- [ ] creating GDNative plugins.
+
+Currently only C++ module generation is supported, so most of the functionallity 
+is revolving around modules over anything else.
 
 ### Requirements
 
 * Python 3.6+
 * Git (optional)
+
+### Compatibility
+
+* Godot Engine 3.0+ (C++ modules generation)
 
 ### Usage
 

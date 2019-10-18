@@ -1,6 +1,6 @@
-# Godot Module
+# GDGen
 
-[![Build Status](https://travis-ci.com/Xrayez/gdmodule.svg?branch=master)](https://travis-ci.com/Xrayez/gdmodule)
+[![Build Status](https://travis-ci.com/Xrayez/gdgen.svg?branch=master)](https://travis-ci.com/Xrayez/gdgen)
 
 *Version: 2.0-alpha*
 

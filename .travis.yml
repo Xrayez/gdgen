@@ -4,4 +4,4 @@ python:
   - '3.6'
 
 script:
-  - python -m unittest -v tests/test_gdmodule.py
+  - python -m unittest -v gdgen/tests/test_gdmodule.py

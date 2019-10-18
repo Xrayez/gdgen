@@ -1,15 +1,17 @@
 from unittest import TestCase
 import os
-import gdmodule
+
+import gdgen
+from gdgen import gdmodule
 
 
 class GDModuleTest(TestCase):
     
-    modules_dir = 'tests/modules/'
+    modules_dir = os.path.join(gdgen.get_path(), "tests/modules/")
     
     default_config = gdmodule.get_default_config_path()
     minimal_config = gdmodule.get_minimal_config_path()
-    sample_config = 'tests/configs/sample.json'
+    sample_config = "tests/configs/sample.json"
     
 
     @classmethod

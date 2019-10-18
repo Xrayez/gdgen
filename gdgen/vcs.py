@@ -1,6 +1,8 @@
 import subprocess
 import os
 
+import gdgen
+
 from gdgen import common
 from gdgen.builders import TemplateWriter
 
@@ -49,7 +51,7 @@ class VCSGit(VCSProvider):
         
     @classmethod
     def get_templates_path(cls):
-        return os.path.join(common.vcs_path, cls.get_name())
+        return os.path.join(gdgen.get_path(), common.vcs_path, cls.get_name())
         
     @staticmethod
     def get_author():

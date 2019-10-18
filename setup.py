@@ -5,13 +5,13 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="gdgen",
-    version="2.0",
+    version="2.0a",
     author="Andrii Doroshenko (Xrayez)",
     author_email="xrayez@gmail.com",
-    description="C++ module generator for Godot Engine",
+    description="Code generator for Godot Engine",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/Xrayez/gdmodule",
+    url="https://github.com/Xrayez/gdgen",
     packages=setuptools.find_packages(),
     entry_points = {
         "console_scripts": [

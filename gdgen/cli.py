@@ -88,7 +88,7 @@ def main():
 	
 def read_input(prompt, default_value=None):
 	if default_value != None:
-		msg = "%s (default: %s): " % (prompt, str(default_value))
+		msg = "%s (default - %s): " % (prompt, str(default_value))
 	else:
 		msg = "%s: " % (prompt)
 		

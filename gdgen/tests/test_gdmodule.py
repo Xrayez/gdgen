@@ -9,10 +9,7 @@ class GDModuleTest(TestCase):
     
     modules_dir = os.path.join(gdgen.get_path(), "tests/modules/")
     
-    default_config = gdmodule.get_default_config_path()
-    minimal_config = gdmodule.get_minimal_config_path()
     sample_config = "tests/configs/sample.json"
-    
 
     @classmethod
     def setUpClass(cls):
@@ -22,7 +19,10 @@ class GDModuleTest(TestCase):
     
     
     def test_init_from_default_config(self):
-        gdmodule.init("Default Module 3D", "default_module_3d", self.default_config, self.modules_dir)
+        config = gdmodule.load_config(gdmodule.get_default_config_path())
+        config['name'] = "Default Module 3D"
+        config['internal_name'] = "default_module_3d"
+        gdmodule.init(config, self.modules_dir)
         
         self.current_dir = "default_module_3d/"
         
@@ -45,7 +45,10 @@ class GDModuleTest(TestCase):
         
     
     def test_init_from_minimal_config(self):
-        gdmodule.init("Minimal Module", "MINIMAL_MODULE", self.minimal_config, self.modules_dir)
+        config = gdmodule.load_config(gdmodule.get_minimal_config_path())
+        config['name'] = "Minimal Module"
+        config['internal_name'] = "MINIMAL_MODULE"
+        gdmodule.init(config, self.modules_dir)
     
         self.current_dir = "minimal_module/"
         
@@ -70,7 +73,10 @@ class GDModuleTest(TestCase):
     
     
     def test_init_from_sample_config(self):
-        gdmodule.init("Sample Module 2D", "sample_module_2D", self.sample_config, self.modules_dir)
+        config = gdmodule.load_config(self.sample_config)
+        config['name'] = "Sample Module 2D"
+        config['internal_name'] = "sample_module_2D"
+        gdmodule.init(config, self.modules_dir)
         
         self.current_dir = "sample_module_2d/"
         

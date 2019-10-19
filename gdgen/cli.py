@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 import argparse
 
@@ -5,10 +7,11 @@ import gdgen
 
 from gdgen import common
 from gdgen import gdmodule
+from gdgen.module import Module
 
 
 def main():
-	# Parse
+	# Parse command line arguments
 	parser = argparse.ArgumentParser()
 
 	parser.add_argument('-n', '--name', default="")
@@ -21,7 +24,7 @@ def main():
 
 	args = parser.parse_args()
 	
-	# Load module config
+	# Load config
 	config = gdmodule.load_config(args.config_path)
 	
 	if args.name and args.internal_name:
@@ -29,37 +32,49 @@ def main():
 		config['name'] = args.name
 		config['internal_name'] = args.internal_name
 	else:
-		# Wizard
-		config['name'] = input("Module name: ")
-		config['internal_name'] = input("Internal module name (snake_case): ")
-		config['author'] = input("Author name: ")
-		config['engine_version'] = input("Engine version (latest, 3.0, 3.1 ...): ")
-		config['cpp_version'] = input("C++ version (c++11): ")
-		config['num_classes'] = int(input("Number of classes to generate: "))
-		
-		classes = []
-		for n in range(config['num_classes']):
-			class_name = input("(%s) Class name: " % n)
-			class_inherits = input("(%s) Class inherits: " % n)
-			class_path = input("(%s) Class path: " % n)
+		try:
+			# Run wizard
+			while config.get('name') == None or config.get('name') == "":
+				config['name'] = read_input("Module name")
+				
+			while config.get('internal_name') == None or config.get('internal_name') == "":
+				config['internal_name'] = read_input("Internal module name (snake_case)")
 			
-			classes.append( {
-					"name": class_name,
-					"inherits": class_inherits,
-					"path": class_path
-				}
-			)
-		config['classes'] = classes
+			config['author'] = read_input("Author name", Module.get_default_author())
+			config['engine_version'] = read_input("Engine version", Module.get_default_engine_version())
+			config['cpp_version'] = read_input("C++ version", Module.get_default_cpp_version())
 			
-		config['docs_path'] = input("Documentation path: ")
-		config['icons_path'] = input("Icons path: ")
-		config['thirdparty_path'] = input("Thirdparty path: ")
-		
-		config['readme'] = input("Initialize README?: ")
-		config['license'] = input("License: ")
-		config['version_control'] = input("Version control system: ")
-		config['to_be_included_inside_project'] = input("Will be included inside project?: ")
-		
+			num_classes = read_input("Number of classes to generate", 0)
+			if not num_classes:
+				num_classes = 0
+			
+			classes = []
+			for n in range(int(num_classes)):
+				class_name = read_input("(%s) Class name" % n)
+				class_inherits = read_input("(%s) Class inherits" % n)
+				class_path = read_input("(%s) Class path" % n, "")
+				
+				classes.append( {
+						"name": class_name,
+						"inherits": class_inherits,
+						"path": class_path
+					}
+				)
+			config['classes'] = classes
+			
+			config['docs_path'] = read_input("Documentation path", Module.get_default_docs_path())
+			config['icons_path'] = read_input("Icons path", Module.get_default_icons_path())
+			config['thirdparty_path'] = read_input("Thirdparty path", Module.get_default_thirdparty_path())
+			
+			config['readme'] = read_input("Initialize README?", True)
+			config['license'] = read_input("License", Module.get_default_license())
+			config['version_control'] = read_input("Version control system", Module.get_default_vcs())
+			config['to_be_included_inside_project'] = read_input("Will be included inside project?", False)
+			
+		except KeyboardInterrupt:
+			print_info("\nGDgen interrupted.")
+			return
+	
 	# Validate config
 	try:
 		validate_config(config)
@@ -69,6 +84,19 @@ def main():
 	
 	# Generate
 	gdmodule.init(config, args.output_path, args.force)
+	
+	
+def read_input(prompt, default_value=None):
+	if default_value != None:
+		msg = "%s (default: %s): " % (prompt, str(default_value))
+	else:
+		msg = "%s: " % (prompt)
+		
+	value = input(msg)
+	if not value:
+		value = default_value
+		
+	return value
 	
 	
 def validate_config(config):

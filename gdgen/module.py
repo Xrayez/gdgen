@@ -48,16 +48,6 @@ class Module:
             
         if self.get_license():
             author = self.get_author()
-            
-            if not author:
-                try:
-                    for vcs in get_vcs_providers():
-                        author = vcs.get_author()
-                        if author:
-                            break
-                except:
-                    pass
-            
             builders.make_license(self, author)
             
         if self.to_be_included_inside_project():
@@ -86,7 +76,25 @@ class Module:
         return self.config.get('internal_name', '').lower()
         
     def get_author(self):
-        return self.config.get('author', '')
+        author = self.config.get('author', '')
+            
+        if not author:
+            author = self.get_default_author(self)
+                
+        return author
+        
+    @staticmethod
+    def get_default_author():
+        author = ''
+        try:
+            for vcs in get_vcs_providers():
+                author = vcs.get_author()
+                if author:
+                    break
+        except:
+            pass
+        
+        return author
         
     def get_engine_version(self, as_string=True):
         
@@ -104,9 +112,17 @@ class Module:
             return ver
             
         return ver_str
+        
+    @staticmethod
+    def get_default_engine_version():
+        return "latest"
     
     def get_cpp_version(self):
         return self.config.get('cpp_version', 'c++11').lower()
+        
+    @staticmethod
+    def get_default_cpp_version():
+        return 'c++11'
         
     def get_classes(self):
         return self.config.get('classes', [])
@@ -114,11 +130,23 @@ class Module:
     def get_docs_path(self):
         return self.config.get('docs_path', '')
         
+    @staticmethod
+    def get_default_docs_path():
+        return 'docs'
+        
     def get_icons_path(self):
         return self.config.get('icons_path', '')
         
+    @staticmethod
+    def get_default_icons_path():
+        return 'editor/icons'
+        
     def get_thirdparty_path(self):
         return self.config.get('thirdparty_path', '')
+        
+    @staticmethod
+    def get_default_thirdparty_path():
+        return 'thirdparty'
         
     def should_initialize_readme(self):
         return self.config.get('readme', '')
@@ -126,8 +154,16 @@ class Module:
     def get_license(self):
         return self.config.get('license', '')
         
+    @staticmethod
+    def get_default_license():
+        return "MIT"
+        
     def get_vcs(self):
         return self.config.get('version_control', '')
+        
+    @staticmethod
+    def get_default_vcs():
+        return "git"
         
     def get_changelog(self):
         return self.config.get('changelog', '')

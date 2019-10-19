@@ -79,7 +79,7 @@ class Module:
         author = self.config.get('author', '')
             
         if not author:
-            author = self.get_default_author(self)
+            author = self.get_default_author()
                 
         return author
         

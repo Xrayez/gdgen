@@ -72,14 +72,13 @@ def main():
 			config['to_be_included_inside_project'] = read_input("Will be included inside project?", False)
 			
 		except KeyboardInterrupt:
-			print_info("\nGDgen interrupted.")
-			return
+			print_info("\nSkipping the wizard.")
 	
 	# Validate config
 	try:
 		validate_config(config)
 	except ValueError as e:
-		print_info('config: ' + str(e))
+		print_info(str(e).lower())
 		return
 	
 	# Generate

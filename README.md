@@ -28,22 +28,28 @@ is revolving around modules over anything else.
 python -m gdgen [-n NAME] [-s INTERNAL_NAME] [-c CONFIG_PATH] [-o OUTPUT_PATH]
 ```
 
-### Step-by-step
+You can also use a wizard which can be invoked by:
+```
+$ ~/src/python/gdgen> python -m gdgen
 
-1. Fill out [configs/default.json](configs/default.json) to suite your needs.
-
-2. Run `gdgen`:
-
-    ```bash
-    python -m gdgen
-    ```
-    
-    Alternatively, pass additional arguments to output the generated module at 
-    specified location, or use different configuration file:
-    
-    ```bash
-    python -m gdgen -o ~/src/godot/modules/ -c ~/my_config.json
-    ```
+Module name: My awesome module
+Internal module name (snake_case): my_module
+Author name (default - You): Me
+Engine version (default - latest): 3.1
+C++ version (default - c++11): c++20
+Number of classes to generate (default - 0): 1
+(0) Class name: NewNode
+(0) Class inherits: Node
+(0) Class path (default - ):
+Documentation path (default - docs): doc_classes
+Icons path (default - editor/icons): icons
+Thirdparty path (default - thirdparty):
+Initialize README? (default - True):
+License (default - MIT):
+Version control system (default - git):
+Will be included inside project? (default - False): True
+Initialized empty Git repository in ~/src/python/gdgen/my_module/.git/
+```
 
 ### Examples
 

@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="gdgen",
-    version="1.0.dev",
+    version="1.0a",
     author="Andrii Doroshenko (Xrayez)",
     author_email="xrayez@gmail.com",
     description="Code generator for Godot Engine",

@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/Xrayez/gdgen.svg?branch=master)](https://travis-ci.com/Xrayez/gdgen)
 
-*Version: 1.0-dev*
+*Version: 1.0-alpha*
 
 An advanced, configurable code generator which aims to automate some aspects of
 [Godot Engine](https://github.com/godotengine/godot) development, namely:

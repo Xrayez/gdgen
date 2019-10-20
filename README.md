@@ -11,26 +11,33 @@ An advanced, configurable code generator which aims to automate some aspects of
 - [ ] creating GDNative plugins.
 
 Currently only C++ module generation is supported, so most of the functionallity 
-is revolving around modules over anything else.
+is revolving around modules.
 
-### Requirements
+## Requirements
 
 * Python 3.6+
 * Git (optional)
 
-### Compatibility
+## Compatibility
 
 * Godot Engine 3.0+ (C++ modules generation)
 
-### Usage
+## Installation
 
 ```bash
-python -m gdgen [-n NAME] [-s INTERNAL_NAME] [-c CONFIG_PATH] [-o OUTPUT_PATH]
+pip install git+https://github.com/Xrayez/gdgen
 ```
 
-You can also use a wizard which can be invoked by:
+## Usage
+
+```bash
+gdgen [-n NAME] [-s INTERNAL_NAME] [-c CONFIG_PATH] [-o OUTPUT_PATH]
 ```
-$ ~/src/python/gdgen> python -m gdgen
+
+## Examples
+For most use cases, you can use a simple wizard. Here's an example output:
+```
+$ ~/src/godot/modules> gdgen
 
 Module name: My awesome module
 Internal module name (snake_case): my_module
@@ -48,17 +55,17 @@ Initialize README? (default - True):
 License (default - MIT):
 Version control system (default - git):
 Will be included inside project? (default - False): True
-Initialized empty Git repository in ~/src/python/gdgen/my_module/.git/
+Initialized empty Git repository in ~/src/godot/modules/my_module/.git/
 ```
 
-### Examples
-
+You can also create your own configuration file:
 ```bash
-# Use created config file and generate the module directly to Godot modules
-python -m gdgen -c tests/configs/sample.json -o ~/src/godot/modules/
+gdgen -c tests/configs/sample.json -o ~/src/godot/modules/
+```
 
-# Use default config file, but fill the required fields manually
-python -m gdgen -n MyModule -s my_module
+Use default config file, but fill the required fields manually:
+```bash
+gdgen -n MyModule -s my_module
 ```
 
 # Config

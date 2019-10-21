@@ -25,6 +25,11 @@ is revolving around modules.
 ## Installation
 
 ```bash
+pip install gdgen
+```
+
+Latest development version:
+```bash
 pip install git+https://github.com/Xrayez/gdgen
 ```
 
